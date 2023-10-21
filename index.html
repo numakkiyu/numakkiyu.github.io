@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="zh_cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>恐鬼症Mod合集 Phasmophobia </title>
+  <meta content="Phasmophobia,恐鬼症Mod合集,恐鬼症,恐鬼症Mod" name="description">
+  <meta content="恐鬼症Mod合集,由恐鬼症玩家共同研发的公共开源项目" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./assets/img/favicon.ico" rel="icon">
+  <link href="./assets/img/favicon.ico" rel="apple-touch-icon">
+
+  <!-- Vendor CSS Files -->
+  <link href="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/css/style.css" rel="stylesheet">
+  <style>
+  .n-notification-main {
+    background-color: #fff;
+    border: 1px solid #e9e9e9;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .n-notification-main__header {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .n-notification-main__content {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+  }
+
+  .n-notification-main-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .n-notification-main-footer__meta {
+    font-size: 12px;
+    color: #999;
+  }
+
+  .n-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    outline: none;
+    border-radius: var(--n-border-radius);
+    width: var(--n-width);
+    height: var(--n-height);
+    padding: var(--n-padding);
+    font-size: var(--n-font-size);
+    font-weight: var(--n-font-weight);
+    color: var(--n-text-color);
+    background-color: var(--n-color);
+    border: var(--n-border);
+  }
+
+  .n-button:hover {
+    color: var(--n-text-color-hover);
+    background-color: var(--n-color-hover);
+    border-color: var(--n-border-hover);
+  }
+
+  .n-button:focus {
+    color: var(--n-text-color-focus);
+    background-color: var(--n-color-focus);
+    border-color: var(--n-border-focus);
+  }
+
+  .n-button--info-type {
+     --n-bezier-ease-out:cubic-bezier(0,0,.2,1);--n-ripple-duration:.6s;--n-opacity-disabled:.5;--n-wave-opacity:.6;--n-color:#f0f8ff;--n-color-hover:#e6f2ff;--n-color-pressed:#cce6ff;--n-color-focus:#e6f2ff;--n-color-disabled:#f0f8ff;--n-ripple-color:#0000;--n-text-color:#2080f0;--n-text-color-hover:#2080f0;--n-text-color-pressed:#2080f0;--n-text-color-focus:#2080f0;--n-text-color-disabled:#2080f0;--n-border:none;--n-border-hover:none;--n-border-pressed:none;--n-border-focus:none;--n-border-disabled:none
+   }
+
+   .n-button--medium-type {
+     --n-width:auto;--n-height:auto;--n-font-size:auto;--n-padding:auto
+   }
+
+   .n-button--secondary {
+     --font-weight:normal;--n-color:rgba(32,128,240,.16);--n-color-hover:rgba(32,128,240,.22);--n-color-pressed:rgba(32,128,240,.28);--n-color-focus:rgba(32,128,240,.22);--n-color-disabled:rgba(46,51,56,.05);--n-ripple-color:#0000;--n-text-color:#2080f0;--n-text-color-hover:#2080f0;--n-text-color-pressed:#2080f0;--n-text-color-focus:#2080f0;--n-text-color-disabled:#2080f0;--n-border:1px solid #2080f0;--n-border-hover:1px solid #4098fc;--n-border-pressed:1px solid #1060c9;--n-border-focus:1px solid #4098fc;--n-border-disabled:1px solid #2080f0
+   }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center">
+
+      <div class="logo me-auto">
+        <h1><a href="index.html">恐鬼症Mod合集</a></h1>
+      </div>
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">主页</a></li>
+          <li><a class="nav-link scrollto " href="#services">介绍</a></li>
+          <li><a class="nav-link scrollto" href="#pricing">下载</a></li>
+          <li><a class="nav-link scrollto" href="#faq">问题回答</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="fade-up">
+          <div>
+            <h1>恐鬼症Mod合集</h1>
+            <h2>由恐鬼症玩家共同研发的公共开源项目（目前只有沙发沙发mod镜像源）</h2>
+            <a href="#pricing" class="btn-get-started scrollto">下载MOD</a>
+            <br>
+            <a><small>在此之前请您阅读<a href="">-----</a></small></a>
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
+          <img src="./assets/img/hero-bg2.png" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container">
+
+        <div class="row">
+          <!--<div class="col-lg-6 d-flex flex-column justify-contents-center" data-aos="fade-left">-->
+            <div class="content pt-4 pt-lg-0">
+              <h3>主要有什么恐鬼症MOD，为什么需要MOD？</h3>
+              <p class="fst-italic">
+               本站点主要提供由玩家共同编写，道具皮肤更换，等一系列MOD。
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle"></i>沙发无敌点MOD</li>
+                <li><i class="bi bi-check-circle"></i>道具皮肤更换</li>
+                <li><i class="bi bi-check-circle"></i>保持更新</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Features Section ======= -->
+    <section id="features" class="features">
+      <div class="container">
+      </div>
+    </section><!-- End Features Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg">
+      <div class="container">
+      </div>
+    </section><!-- End Services Section -->
+
+    
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio">
+      <div class="container">
+         <div class="section-title" data-aos="fade-up">
+          <h2>关于该网站</h2>
+          <p> 该网站为镜像系统,与恐鬼症Mod合集以 和 恐鬼症攻略组 没有任何关系</p>
+        </div>
+      </div>
+    </section><!-- End Cta Section -->
+
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>如何安装？</h2>
+          <p>将下载的文件放入到文件夹中的Phasmophobia_Data这个项目的下面，选择替换掉里面的文件，详细可以观看视频【<a href="https://www.bilibili.com/video/BV1p8411i747/?vd_source=aadeb51f4269319d431d4db569bfbd7f" target="_blank">恐鬼症安装沙发模组教程</a>】 ，或者文件夹里面的说明。
+          </p>
+        </div>
+
+        
+      </div>
+    </section><!-- End Testimonials Section -->
+    
+    <!-- ======= Pricing Section ======= -->
+    <section id="pricing" class="pricing section-bg">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>下载MOD</h2>
+          <p>下面的MOD都会随着游戏的更新而更新，下载默认密码：1234</p>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="box" data-aos="zoom-in">
+              <h3>更多MOD</h3>
+              <ul>
+                
+              </ul>
+              <div class="btn-wrap">
+                 <a href="--------" class="btn-buy" target="_blank" id="download-mod">---</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
+            <div class="box" data-aos="zoom-in" data-aos-delay="100">
+              <span class="advanced">V0.9.0.10</span>
+              <h3>沙发无敌点MOD</h3>
+              <ul>
+                <li>提供者：<a href="#testimonials">恐鬼症Mod合集</a></li>
+                <li>玩法视频：<a href="https://www.bilibili.com/video/BV1p8411i747/?vd_source=aadeb51f4269319d431d4db569bfbd7f">恐鬼症安装沙发模组教程</a></li>
+                <li>下载密码：1234</li>
+                <li>版权属于 恐鬼症Mod合集 所有</li>
+              </ul>
+              <div class="btn-wrap">
+                <a href="" class="btn-buy" id="download-sofa">下载</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
+            <div class="box" data-aos="zoom-in" data-aos-delay="200">
+              <span class="advanced">停止提供</span>
+              <h3>存档修改器</h3>
+              <ul>
+                <li>提供者：<a href="#testimonials">第三方开发者</a></li>
+                <li>提示：本网站已经停止该软件提供服务</li>
+                <li>下载密码：----</li>
+                <li>-----</li>
+              </ul>
+              <div class="btn-wrap">
+                <a href="" class="btn-buy" id="download-xiougaiqi">下载</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
+            <div class="box" data-aos="zoom-in" data-aos-delay="300">
+            <span class="advanced">更新v0.0.2</span>
+              <h3>模组替换器</h3>
+              <ul>
+                <li>提供者：<a href="#testimonials">恐鬼症Mod合集</a></li>
+                <li>提示：更新版本v0.0.2</li>
+                <li>下载密码：1234</li>
+                <li>版权属于 恐鬼症Mod合集 所有</li>
+              </ul>
+              <div class="btn-wrap">
+                <a href="#" class="btn-buy" id="download-modth">下载</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <pre class="n-notification-main__content">关于存档修改器：今日起移除存档文件、以及永久性下架存档修改器，目的为保护及尊重认真肝游戏手打升级玩家的权益，任何白嫖等级金钱等作弊的文件。</pre>
+        <pre class="n-notification-main__content">如果你的存档有问题可以点击<a href="https://beihaibaichuan.lanzouj.com/b02r4clah" target="_blank">存档备份</a>进行下载</pre>
+      </div>
+    </section><!-- End Pricing Section -->
+        
+    <!-- ======= F.A.Q Section ======= -->
+    <section id="faq" class="faq">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>问题回答</h2>
+        </div>
+
+        <ul class="faq-list">
+          
+          <li>
+            <div data-bs-toggle="collapse" class="collapsed question" href="#faq7">目前沙发无敌点MOD只有这一个吗？<i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+            <div id="faq7" class="collapse" data-bs-parent=".faq-list">
+              <p>
+                根据目前的状况来讲，很多开发者已经停止对于沙发模组的更新，本站点会持续更新沙发无敌点MOD。
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div data-bs-toggle="collapse" class="collapsed question" href="#faq1">沙发无敌点MOD是挂吗？<i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+            <div id="faq1" class="collapse" data-bs-parent=".faq-list">
+              <p>
+                准确来讲的话应该不算挂，只能说添加了一个无敌点，并且只有三个地图可以使用，具体的话还得要看你个人愿不愿意用。
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div data-bs-toggle="collapse" href="#faq2" class="collapsed question">使用这个沙发无敌点MOD会被举报吗？ <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+            <div id="faq2" class="collapse" data-bs-parent=".faq-list">
+              <p>
+               一般来讲，玩恐鬼镇的人都知道沙发无敌点，这个mod基本是不会有人举报的，除非有些小心眼的人qwq。
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div data-bs-toggle="collapse" href="#faq3" class="collapsed question">不同游戏版本可以用以前的mod吗？<i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+            <div id="faq3" class="collapse" data-bs-parent=".faq-list">
+              <p>
+                不可以使用，每次更新都是不同的版本号，如果用了以前的，可能会导致游戏加载错误，导致崩溃。
+              </p>
+            </div>
+          </li>
+
+          <!--<li>-->
+          <!--  <div data-bs-toggle="collapse" href="#faq4" class="collapsed question">修改存档和金钱会被封吗？<i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>-->
+          <!--  <div id="faq4" class="collapse" data-bs-parent=".faq-list">-->
+          <!--    <p>-->
+          <!--      以普遍理论而言，基本是不会被封的，除非你修改的过于离谱，而且不是特别建议使用存档修改器。-->
+          <!--    </p>-->
+          <!--  </div>-->
+          <!--</li>-->
+
+          <li>
+            <div data-bs-toggle="collapse" href="#faq5" class="collapsed question">这个网站提供修改器吗？<i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+            <div id="faq5" class="collapse" data-bs-parent=".faq-list">
+              <p>
+                我们提供的都是基于玩家常游玩的情况下的修改器，不会提供作影响他人正常游玩的弊修改器。
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div data-bs-toggle="collapse" href="#faq6" class="collapsed question">这网站的里面的资源是收费的吗？<i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+            <div id="faq6" class="collapse" data-bs-parent=".faq-list">
+              <p>
+               完全免费！！！！
+              </p>
+            </div>
+          </li>
+
+        </ul>
+
+      </div>
+    </section><!-- End Frequently Asked Questions Section -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-info">
+              <h3>恐鬼症Mod合集</h3>
+              <p>
+                问题联系[网站问题，侵权问题]
+                <br>
+                <strong>联系微信:</strong> 
+                <strong>联系邮箱:</strong><br>
+                <strong>联系QQ:</strong>
+              </p>
+              <br>
+              <p><b>抵制不良游戏，拒绝盗版游戏。
+              <br>注意自我保护，谨防受骗上当。
+              <br>适度游戏益脑，沉迷游戏伤身。
+              <br>合理安排时间，享受健康生活。
+              </b></p>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>站内连接</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#"></a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#"></a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#"></a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#"></a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#"></a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>站外连接</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="https://store.steampowered.com/app/739630/Phasmophobia/">恐鬼症Steam官网</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="https://wiki.biligame.com/phasmophobia/%E9%A6%96%E9%A1%B5">恐鬼症中文社区wiki</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="https://kgzorg.tianbeigm.cn/">恐鬼症攻略组</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>关于</h4>
+            <p></p>
+            <img src="" onload="if (this.width>140 || this.height>226) if (this.width/this.height>140/226) this.width=140*1.5; else this.height=226*1.5;" width="210">
+            <br>
+            <a><small>恐鬼症(Phasmophobia)以及游戏玩法属于Kinetic Games公司所有</small></a>
+            <br>
+            <br>
+            <a><small>本站目前为镜像系统，仅供学习和参考</small></a>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+         公共开源项目
+      </div>
+      <div class="credits">
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/aos/aos.js"></script>
+  <script src="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="https://kgzmod.tianbeigm.cn/oldkgzmod/assets/js/main.js"></script>
+  <script>
+      // 获取按钮元素
+var noFileButton = document.getElementById("noFileButton");
+
+// 添加点击事件监听器
+noFileButton.addEventListener("click", function(event) {
+  event.preventDefault(); // 阻止链接默认行为
+
+  // 创建一个弹窗
+  var popup = document.createElement("div");
+  popup.className = "popup";
+  popup.textContent = "暂时还没有提供文件喵";
+
+  // 添加弹窗到页面中
+  document.body.appendChild(popup);
+
+  // 设置弹窗的样式
+  popup.style.position = "fixed";
+  popup.style.top = "50%";
+  popup.style.left = "50%";
+  popup.style.transform = "translate(-50%, -50%)";
+  popup.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+  popup.style.color = "white";
+  popup.style.padding = "20px";
+  popup.style.borderRadius = "5px";
+  popup.style.zIndex = "9999";
+
+  // 关闭弹窗的按钮
+  var closeButton = document.createElement("button");
+  closeButton.textContent = "知道了";
+  closeButton.style.marginTop = "10px";
+  closeButton.style.padding = "5px 10px";
+  closeButton.style.border = "none";
+  closeButton.style.backgroundColor = "red";
+  closeButton.style.color = "white";
+  closeButton.style.borderRadius = "5px";
+  closeButton.style.cursor = "pointer";
+  
+  // 添加关闭按钮到弹窗
+  popup.appendChild(closeButton);
+
+  // 添加关闭按钮的点击事件
+  closeButton.addEventListener("click", function() {
+    document.body.removeChild(popup); // 移除弹窗
+  });
+});
+
+  </script>
+<script>
+  // 获取所有的下载按钮元素
+  var downloadButtons = document.querySelectorAll(".btn-buy");
+
+  // 定义下载链接映射
+  var downloadLinks = {
+    "download-sofa": "https://beihaibaichuan.lanzouj.com/b02r3ca7c",
+    "download-modth": "https://beihaibaichuan.lanzouj.com/b02r3g70b",
+    "download-mod": "https://kgzmod.tianbeigm.cn/mod-download",
+    "noFileButton": "#", // 这个按钮的下载链接为空
+  };
+
+  // 定义协议内容
+  var agreementText = "请阅读并同意以下协议，请阅读以下协议，方可继续下载MOD：\n\n" +
+    "- 本网站的所有mod均为开源公开项目，并不存在任何收费项目。\n" +
+    "- 本网站的所有mod资源均为公开的项目，禁止进行二次倒卖。\n" +
+    "- 本网站的mod是通过哈希检测，下载文件内绝对没有任何网络病毒传播造成任何损害。\n" +
+    "- 部分mod可能会违法恐鬼症(Phasmophobia)的使用条款，使用该mod导致一些功能性风险；风险由本人承担，与本网站无关。\n" +
+    "- 如果该mod有错误，导致您的系统发生错误，作者不对软件的任何错误或故障负责以及承担任何法律责任。\n\n" +
+    "如果你同意以上协议，请点击“继续”，否则请点击“取消”；如果未有弹出下载页面，请点击 “允许弹窗重定向”。";
+
+  // 定义下载函数
+  function download(event) {
+    // 阻止默认链接行为
+    event.preventDefault();
+
+    // 获取按钮的id属性
+    var buttonId = event.target.getAttribute("id");
+
+    // 根据按钮id获取相应的下载链接
+    var downloadLink = downloadLinks[buttonId];
+
+    // 如果下载链接为空，不执行下载操作
+    if (!downloadLink || downloadLink === "#") {
+      alert("为了能够更好的优化游戏环境，停止提供该文件");
+      return;
+    }
+
+    // 弹出协议框
+    var agree = confirm(agreementText);
+
+    // 如果用户同意协议
+    if (agree) {
+      // 弹出下载页面
+      window.open(downloadLink);
+    }
+  }
+
+  // 给所有下载按钮添加点击事件监听器
+  downloadButtons.forEach(function (button) {
+    button.addEventListener("click", download);
+  });
+</script>
+
+    
+</body>
+</html>
