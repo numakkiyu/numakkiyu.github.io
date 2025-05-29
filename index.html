@@ -358,7 +358,7 @@
 
         .authority-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 15px;
         }
 
@@ -368,12 +368,53 @@
             border-radius: 10px;
         }
 
+        .abuse-detection {
+            background: rgba(255, 87, 87, 0.15);
+            border: 1px solid var(--danger);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .abuse-title {
+            color: var(--danger);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .abuse-list {
+            padding-left: 20px;
+        }
+
+        .abuse-list li {
+            margin-bottom: 8px;
+            color: var(--danger);
+        }
+
         .footer {
             text-align: center;
             padding: 30px 0;
             color: var(--text-secondary);
             font-size: 0.9rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .error-message {
+            background: rgba(255, 87, 87, 0.2);
+            border: 1px solid var(--danger);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            color: var(--danger);
+            margin-bottom: 10px;
         }
 
         /* Animations */
@@ -391,6 +432,12 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.03); }
             100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
         /* Language toggle */
@@ -424,8 +471,8 @@
     <div class="container">
         <header>
             <div class="logo">
-                <i class="fas fa-crown logo-icon"></i>
-                <h1>BR Rating</h1>
+                <i class="fas fa-shield-alt logo-icon"></i>
+                <h1>BR Rating - 防刷分机制</h1>
             </div>
             <div class="controls">
                 <div class="lang-toggle" id="langToggle">
@@ -447,49 +494,49 @@
                 <div class="input-group">
                     <label for="kills" class="lang-zh">常规击杀 (K)</label>
                     <label for="kills" class="lang-en" style="display:none">Regular Kills (K)</label>
-                    <input type="number" id="kills" value="10906">
+                    <input type="number" id="kills" value="341">
                 </div>
                 
                 <div class="input-group">
                     <label for="deaths" class="lang-zh">常规死亡 (D)</label>
                     <label for="deaths" class="lang-en" style="display:none">Regular Deaths (D)</label>
-                    <input type="number" id="deaths" value="10132">
+                    <input type="number" id="deaths" value="0">
                 </div>
                 
                 <div class="input-group">
                     <label for="finalKills" class="lang-zh">最终击杀 (FK)</label>
                     <label for="finalKills" class="lang-en" style="display:none">Final Kills (FK)</label>
-                    <input type="number" id="finalKills" value="10383">
+                    <input type="number" id="finalKills" value="674">
                 </div>
                 
                 <div class="input-group">
                     <label for="finalDeaths" class="lang-zh">最终死亡 (FD)</label>
                     <label for="finalDeaths" class="lang-en" style="display:none">Final Deaths (FD)</label>
-                    <input type="number" id="finalDeaths" value="1958">
+                    <input type="number" id="finalDeaths" value="0">
                 </div>
                 
                 <div class="input-group">
                     <label for="bedsBroken" class="lang-zh">摧毁床数 (BB)</label>
                     <label for="bedsBroken" class="lang-en" style="display:none">Beds Broken (BB)</label>
-                    <input type="number" id="bedsBroken" value="5523">
+                    <input type="number" id="bedsBroken" value="64">
                 </div>
                 
                 <div class="input-group">
                     <label for="bedsLost" class="lang-zh">丢失床数 (BL)</label>
                     <label for="bedsLost" class="lang-en" style="display:none">Beds Lost (BL)</label>
-                    <input type="number" id="bedsLost" value="2439">
+                    <input type="number" id="bedsLost" value="0">
                 </div>
                 
                 <div class="input-group">
                     <label for="wins" class="lang-zh">胜场数 (W)</label>
                     <label for="wins" class="lang-en" style="display:none">Wins (W)</label>
-                    <input type="number" id="wins" value="4562">
+                    <input type="number" id="wins" value="64">
                 </div>
                 
                 <div class="input-group">
                     <label for="losses" class="lang-zh">败场数 (L)</label>
                     <label for="losses" class="lang-en" style="display:none">Losses (L)</label>
-                    <input type="number" id="losses" value="3218">
+                    <input type="number" id="losses" value="0">
                 </div>
                 
                 <button class="btn" id="analyzeBtn">
@@ -502,239 +549,260 @@
             <div class="card result-card">
                 <h2 class="card-title"><i class="fas fa-chart-pie"></i> <span class="lang-zh">专业评级报告</span><span class="lang-en" style="display:none">Professional Rating Report</span></h2>
                 
-                <div class="rating-display">
-                    <div class="lang-zh">综合评分</div>
-                    <div class="lang-en" style="display:none">Overall Rating</div>
-                    <div class="rating-value">3.30</div>
-                    <div class="rating-level lang-zh">大师级玩家</div>
-                    <div class="rating-level lang-en" style="display:none">Master Player</div>
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    <div class="error-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="lang-zh">数据异常检测</span>
+                        <span class="lang-en" style="display:none">Data Anomaly Detected</span>
+                    </div>
+                    <p id="errorDetails" class="lang-zh">系统检测到异常数据，无法生成可靠评级</p>
+                    <p id="errorDetailsEn" class="lang-en" style="display:none">System detected abnormal data, cannot generate reliable rating</p>
                 </div>
                 
-                <div class="radar-chart-container">
-                    <canvas id="radarChart"></canvas>
-                </div>
-                
-                <div class="dimension-analysis">
-                    <h3 class="section-title lang-zh"><i class="fas fa-layer-group"></i> 五维分析</h3>
-                    <h3 class="section-title lang-en" style="display:none"><i class="fas fa-layer-group"></i> Five-Dimensional Analysis</h3>
+                <div id="ratingDisplay" style="display: block;">
+                    <div class="rating-display">
+                        <div class="lang-zh">综合评分</div>
+                        <div class="lang-en" style="display:none">Overall Rating</div>
+                        <div class="rating-value">249.76</div>
+                        <div class="rating-level lang-zh">传奇级玩家</div>
+                        <div class="rating-level lang-en" style="display:none">Legendary Player</div>
+                    </div>
                     
-                    <div class="dimension-grid">
-                        <!-- 常规作战效率 -->
-                        <div class="dimension-card">
-                            <div class="dimension-header">
-                                <div class="dimension-name lang-zh">常规作战效率</div>
-                                <div class="dimension-name lang-en" style="display:none">Combat Efficiency</div>
-                                <div class="dimension-score">0.51</div>
-                            </div>
-                            <div>
-                                <span class="dimension-level level-average lang-zh">合格</span>
-                                <span class="dimension-level level-average lang-en" style="display:none">Average</span>
-                            </div>
-                            
-                            <div class="dimension-stats">
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">K/D 比值</div>
-                                    <div class="stat-label lang-en" style="display:none">K/D Ratio</div>
-                                    <div class="stat-value">1.08</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">击杀数</div>
-                                    <div class="stat-label lang-en" style="display:none">Kills</div>
-                                    <div class="stat-value">10,906</div>
-                                </div>
-                            </div>
-                            
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 25.5%; background: var(--warning);"></div>
-                            </div>
-                            
-                            <div class="dimension-description lang-zh">
-                                评估玩家在床存在时的PVP能力，反映常规阶段击杀效率。K/D比值1.08表示每死亡1次可击杀1.08名敌人。
-                            </div>
-                            <div class="dimension-description lang-en" style="display:none">
-                                Evaluates PVP ability when beds exist, reflecting killing efficiency in regular phase. K/D ratio 1.08 means 1.08 kills per death.
-                            </div>
-                        </div>
+                    <div class="radar-chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    
+                    <div class="dimension-analysis">
+                        <h3 class="section-title lang-zh"><i class="fas fa-layer-group"></i> 五维分析</h3>
+                        <h3 class="section-title lang-en" style="display:none"><i class="fas fa-layer-group"></i> Five-Dimensional Analysis</h3>
                         
-                        <!-- 终局统治力 -->
-                        <div class="dimension-card">
-                            <div class="dimension-header">
-                                <div class="dimension-name lang-zh">终局统治力</div>
-                                <div class="dimension-name lang-en" style="display:none">Final Dominance</div>
-                                <div class="dimension-score">2.30</div>
-                            </div>
-                            <div>
-                                <span class="dimension-level level-excellent lang-zh">专家级</span>
-                                <span class="dimension-level level-excellent lang-en" style="display:none">Expert</span>
-                            </div>
-                            
-                            <div class="dimension-stats">
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">FK/D 比值</div>
-                                    <div class="stat-label lang-en" style="display:none">FK/D Ratio</div>
-                                    <div class="stat-value">5.30</div>
+                        <div class="dimension-grid">
+                            <!-- 常规作战效率 -->
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-name lang-zh">常规作战效率</div>
+                                    <div class="dimension-name lang-en" style="display:none">Combat Efficiency</div>
+                                    <div class="dimension-score">2.00</div>
                                 </div>
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">最终击杀</div>
-                                    <div class="stat-label lang-en" style="display:none">Final Kills</div>
-                                    <div class="stat-value">10,383</div>
+                                <div>
+                                    <span class="dimension-level level-excellent lang-zh">合格</span>
+                                    <span class="dimension-level level-excellent lang-en" style="display:none">Average</span>
                                 </div>
-                            </div>
-                            
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 76.7%; background: var(--primary);"></div>
-                            </div>
-                            
-                            <div class="dimension-description lang-zh">
-                                评估玩家在床摧毁后的终结能力，反映终局阶段统治力。FK/D比值5.30表示每死亡1次可击杀5.3名无床敌人。
-                            </div>
-                            <div class="dimension-description lang-en" style="display:none">
-                                Evaluates finishing ability after bed destruction, reflecting dominance in final phase. FK/D ratio 5.30 means 5.3 kills per death against bedless enemies.
-                            </div>
-                        </div>
-                        
-                        <!-- 战略资源效率 -->
-                        <div class="dimension-card">
-                            <div class="dimension-header">
-                                <div class="dimension-name lang-zh">战略资源效率</div>
-                                <div class="dimension-name lang-en" style="display:none">Strategic Efficiency</div>
-                                <div class="dimension-score">1.74</div>
-                            </div>
-                            <div>
-                                <span class="dimension-level level-good lang-zh">精英级</span>
-                                <span class="dimension-level level-good lang-en" style="display:none">Elite</span>
-                            </div>
-                            
-                            <div class="dimension-stats">
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">BB/BL 比值</div>
-                                    <div class="stat-label lang-en" style="display:none">BB/BL Ratio</div>
-                                    <div class="stat-value">2.26</div>
+                                
+                                <div class="dimension-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">K/D 比值</div>
+                                        <div class="stat-label lang-en" style="display:none">K/D Ratio</div>
+                                        <div class="stat-value">∞</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">击杀数</div>
+                                        <div class="stat-label lang-en" style="display:none">Kills</div>
+                                        <div class="stat-value">341</div>
+                                    </div>
                                 </div>
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">摧毁床数</div>
-                                    <div class="stat-label lang-en" style="display:none">Beds Broken</div>
-                                    <div class="stat-value">5,523</div>
+                                
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 100%; background: var(--warning);"></div>
+                                </div>
+                                
+                                <div class="dimension-description lang-zh">
+                                    评估玩家在床存在时的PVP能力。K/D比值无限大表示0死亡，可能存在异常。
+                                </div>
+                                <div class="dimension-description lang-en" style="display:none">
+                                    Evaluates PVP ability when beds exist. Infinite K/D ratio indicates 0 deaths, which may be abnormal.
                                 </div>
                             </div>
                             
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 58%; background: var(--success);"></div>
-                            </div>
-                            
-                            <div class="dimension-description lang-zh">
-                                评估玩家对战略资源（床）的控制能力，反映团队贡献。BB/BL比值2.26表示每丢失1张床可摧毁2.26张敌方床。
-                            </div>
-                            <div class="dimension-description lang-en" style="display:none">
-                                Evaluates control over strategic resources (beds), reflecting team contribution. BB/BL ratio 2.26 means 2.26 enemy beds destroyed per bed lost.
-                            </div>
-                        </div>
-                        
-                        <!-- 生存效率 -->
-                        <div class="dimension-card">
-                            <div class="dimension-header">
-                                <div class="dimension-name lang-zh">生存效率</div>
-                                <div class="dimension-name lang-en" style="display:none">Survival Efficiency</div>
-                                <div class="dimension-score">0.57</div>
-                            </div>
-                            <div>
-                                <span class="dimension-level level-poor lang-zh">需改进</span>
-                                <span class="dimension-level level-poor lang-en" style="display:none">Needs Improvement</span>
-                            </div>
-                            
-                            <div class="dimension-stats">
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">总死亡数</div>
-                                    <div class="stat-label lang-en" style="display:none">Total Deaths</div>
-                                    <div class="stat-value">12,090</div>
+                            <!-- 终局统治力 -->
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-name lang-zh">终局统治力</div>
+                                    <div class="dimension-name lang-en" style="display:none">Final Dominance</div>
+                                    <div class="dimension-score">25.97</div>
                                 </div>
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">死亡率</div>
-                                    <div class="stat-label lang-en" style="display:none">Death Rate</div>
-                                    <div class="stat-value">1.12</div>
+                                <div>
+                                    <span class="dimension-level level-excellent lang-zh">专家级</span>
+                                    <span class="dimension-level level-excellent lang-en" style="display:none">Expert</span>
                                 </div>
-                            </div>
-                            
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 57%; background: var(--danger);"></div>
-                            </div>
-                            
-                            <div class="dimension-description lang-zh">
-                                评估玩家风险规避能力，反映生存策略有效性。死亡率1.12表示死亡次数高于击杀次数，生存策略需优化。
-                            </div>
-                            <div class="dimension-description lang-en" style="display:none">
-                                Evaluates risk avoidance ability, reflecting survival strategy effectiveness. Death rate 1.12 indicates more deaths than kills, survival strategy needs optimization.
-                            </div>
-                        </div>
-                        
-                        <!-- 胜率系数 -->
-                        <div class="dimension-card">
-                            <div class="dimension-header">
-                                <div class="dimension-name lang-zh">胜率系数</div>
-                                <div class="dimension-name lang-en" style="display:none">Win Rate Factor</div>
-                                <div class="dimension-score">0.89</div>
-                            </div>
-                            <div>
-                                <span class="dimension-level level-good lang-zh">良好</span>
-                                <span class="dimension-level level-good lang-en" style="display:none">Good</span>
-                            </div>
-                            
-                            <div class="dimension-stats">
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">胜率</div>
-                                    <div class="stat-label lang-en" style="display:none">Win Rate</div>
-                                    <div class="stat-value">58.6%</div>
+                                
+                                <div class="dimension-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">FK/D 比值</div>
+                                        <div class="stat-label lang-en" style="display:none">FK/D Ratio</div>
+                                        <div class="stat-value">∞</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">最终击杀</div>
+                                        <div class="stat-label lang-en" style="display:none">Final Kills</div>
+                                        <div class="stat-value">674</div>
+                                    </div>
                                 </div>
-                                <div class="stat-item">
-                                    <div class="stat-label lang-zh">总场次</div>
-                                    <div class="stat-label lang-en" style="display:none">Total Games</div>
-                                    <div class="stat-value">7,780</div>
+                                
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 100%; background: var(--primary);"></div>
+                                </div>
+                                
+                                <div class="dimension-description lang-zh">
+                                    评估玩家在床摧毁后的终结能力。FK/D比值无限大表示0死亡，可能存在异常。
+                                </div>
+                                <div class="dimension-description lang-en" style="display:none">
+                                    Evaluates finishing ability after bed destruction. Infinite FK/D ratio indicates 0 deaths, which may be abnormal.
                                 </div>
                             </div>
                             
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 89%; background: var(--info);"></div>
+                            <!-- 战略资源效率 -->
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-name lang-zh">战略资源效率</div>
+                                    <div class="dimension-name lang-en" style="display:none">Strategic Efficiency</div>
+                                    <div class="dimension-score">1.00</div>
+                                </div>
+                                <div>
+                                    <span class="dimension-level level-good lang-zh">精英级</span>
+                                    <span class="dimension-level level-good lang-en" style="display:none">Elite</span>
+                                </div>
+                                
+                                <div class="dimension-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">BB/BL 比值</div>
+                                        <div class="stat-label lang-en" style="display:none">BB/BL Ratio</div>
+                                        <div class="stat-value">∞</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">摧毁床数</div>
+                                        <div class="stat-label lang-en" style="display:none">Beds Broken</div>
+                                        <div class="stat-value">64</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 100%; background: var(--success);"></div>
+                                </div>
+                                
+                                <div class="dimension-description lang-zh">
+                                    评估玩家对战略资源（床）的控制能力。BB/BL比值无限大表示0床丢失，可能存在异常。
+                                </div>
+                                <div class="dimension-description lang-en" style="display:none">
+                                    Evaluates control over strategic resources (beds). Infinite BB/BL ratio indicates 0 beds lost, which may be abnormal.
+                                </div>
                             </div>
                             
-                            <div class="dimension-description lang-zh">
-                                评估玩家整体表现稳定性，反映长期游戏实力。58.6%胜率表示每100场游戏中赢得58.6场。
+                            <!-- 生存效率 -->
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-name lang-zh">生存效率</div>
+                                    <div class="dimension-name lang-en" style="display:none">Survival Efficiency</div>
+                                    <div class="dimension-score">0.40</div>
+                                </div>
+                                <div>
+                                    <span class="dimension-level level-poor lang-zh">异常</span>
+                                    <span class="dimension-level level-poor lang-en" style="display:none">Anomaly</span>
+                                </div>
+                                
+                                <div class="dimension-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">总死亡数</div>
+                                        <div class="stat-label lang-en" style="display:none">Total Deaths</div>
+                                        <div class="stat-value">2</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">死亡率</div>
+                                        <div class="stat-label lang-en" style="display:none">Death Rate</div>
+                                        <div class="stat-value">0.00</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 40%; background: var(--danger);"></div>
+                                </div>
+                                
+                                <div class="dimension-description lang-zh">
+                                    评估玩家风险规避能力。死亡数据不一致：输入0死亡但计算显示2次死亡，存在数据异常。
+                                </div>
+                                <div class="dimension-description lang-en" style="display:none">
+                                    Evaluates risk avoidance ability. Death data inconsistency: 0 deaths input but 2 deaths calculated, data anomaly exists.
+                                </div>
                             </div>
-                            <div class="dimension-description lang-en" style="display:none">
-                                Evaluates overall performance stability, reflecting long-term gaming strength. 58.6% win rate means winning 58.6 out of every 100 games.
+                            
+                            <!-- 胜率系数 -->
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-name lang-zh">胜率系数</div>
+                                    <div class="dimension-name lang-en" style="display:none">Win Rate Factor</div>
+                                    <div class="dimension-score">1.00</div>
+                                </div>
+                                <div>
+                                    <span class="dimension-level level-excellent lang-zh">完美</span>
+                                    <span class="dimension-level level-excellent lang-en" style="display:none">Perfect</span>
+                                </div>
+                                
+                                <div class="dimension-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">胜率</div>
+                                        <div class="stat-label lang-en" style="display:none">Win Rate</div>
+                                        <div class="stat-value">100%</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label lang-zh">总场次</div>
+                                        <div class="stat-label lang-en" style="display:none">Total Games</div>
+                                        <div class="stat-value">64</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 100%; background: var(--info);"></div>
+                                </div>
+                                
+                                <div class="dimension-description lang-zh">
+                                    评估玩家整体表现稳定性。100%胜率在64场游戏中极为罕见，可能存在异常。
+                                </div>
+                                <div class="dimension-description lang-en" style="display:none">
+                                    Evaluates overall performance stability. 100% win rate in 64 games is extremely rare and may be abnormal.
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="authority-section">
-                    <div class="authority-title">
-                        <i class="fas fa-shield-alt"></i>
-                        <span class="lang-zh">评级权威性保障</span>
-                        <span class="lang-en" style="display:none">Rating Authority Guarantee</span>
-                    </div>
-                    <div class="authority-content">
-                        <div class="authority-item">
-                            <div class="stat-label lang-zh">场次验证</div>
-                            <div class="stat-label lang-en" style="display:none">Game Validation</div>
-                            <div class="stat-value lang-zh">7,780 场</div>
-                            <div class="stat-value lang-en" style="display:none">7,780 Games</div>
-                            <div class="dimension-description lang-zh">
-                                总场次超过5000场，数据高度可信，评级权威性有保障。
-                            </div>
-                            <div class="dimension-description lang-en" style="display:none">
-                                Total games exceed 5000, data is highly credible, rating authority is guaranteed.
-                            </div>
+                    
+                    <div class="authority-section">
+                        <div class="authority-title">
+                            <i class="fas fa-shield-alt"></i>
+                            <span class="lang-zh">防刷分机制分析</span>
+                            <span class="lang-en" style="display:none">Anti-Cheating Analysis</span>
                         </div>
-                        <div class="authority-item">
-                            <div class="stat-label lang-zh">防刷分机制</div>
-                            <div class="stat-label lang-en" style="display:none">Anti-Cheating</div>
-                            <div class="stat-value lang-zh">已激活</div>
-                            <div class="stat-value lang-en" style="display:none">Activated</div>
-                            <div class="dimension-description lang-zh">
-                                系统自动检测异常数据，低场次高数据玩家评分将受到限制。
+                        <div class="authority-content">
+                            <div class="authority-item">
+                                <div class="stat-label lang-zh">场次验证</div>
+                                <div class="stat-label lang-en" style="display:none">Game Validation</div>
+                                <div class="stat-value lang-zh">64 场 (不足5000场)</div>
+                                <div class="stat-value lang-en" style="display:none">64 Games (less than 5000)</div>
+                                <div class="dimension-description lang-zh">
+                                    总场次远低于5000场标准，数据可信度低，评级结果不可靠。
+                                </div>
+                                <div class="dimension-description lang-en" style="display:none">
+                                    Total games are far below the 5000 standard, data credibility is low, rating is unreliable.
+                                </div>
                             </div>
-                            <div class="dimension-description lang-en" style="display:none">
-                                System automatically detects abnormal data, players with low games and high stats will be restricted.
+                            
+                            <div class="abuse-detection">
+                                <div class="abuse-title">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span class="lang-zh">检测到异常数据模式</span>
+                                    <span class="lang-en" style="display:none">Abnormal Data Pattern Detected</span>
+                                </div>
+                                <ul class="abuse-list">
+                                    <li class="lang-zh">死亡数据不一致：输入0死亡但系统计算显示2次死亡</li>
+                                    <li class="lang-en" style="display:none">Death data inconsistency: 0 deaths input but system calculated 2 deaths</li>
+                                    
+                                    <li class="lang-zh">极端完美数据：100%胜率且所有死亡数据为0</li>
+                                    <li class="lang-en" style="display:none">Extreme perfect data: 100% win rate and all death data is 0</li>
+                                    
+                                    <li class="lang-zh">低场次高数据：64场游戏却拥有异常高的击杀/摧毁数据</li>
+                                    <li class="lang-en" style="display:none">Low games with high stats: 64 games with abnormally high kills/destruction data</li>
+                                    
+                                    <li class="lang-zh">生存效率异常：输入0死亡但生存效率仅为0.40</li>
+                                    <li class="lang-en" style="display:none">Survival efficiency anomaly: 0 deaths input but survival efficiency only 0.40</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -773,13 +841,41 @@
         document.getElementById('analyzeBtn').addEventListener('click', function() {
             // 获取输入值
             const kills = parseInt(document.getElementById('kills').value) || 0;
-            const deaths = parseInt(document.getElementById('deaths').value) || 1;
+            const deaths = parseInt(document.getElementById('deaths').value) || 0;
             const finalKills = parseInt(document.getElementById('finalKills').value) || 0;
-            const finalDeaths = parseInt(document.getElementById('finalDeaths').value) || 1;
+            const finalDeaths = parseInt(document.getElementById('finalDeaths').value) || 0;
             const bedsBroken = parseInt(document.getElementById('bedsBroken').value) || 0;
-            const bedsLost = parseInt(document.getElementById('bedsLost').value) || 1;
+            const bedsLost = parseInt(document.getElementById('bedsLost').value) || 0;
             const wins = parseInt(document.getElementById('wins').value) || 0;
-            const losses = parseInt(document.getElementById('losses').value) || 1;
+            const losses = parseInt(document.getElementById('losses').value) || 0;
+            
+            // 计算总场次
+            const totalGames = wins + losses;
+            
+            // 执行防刷分检查
+            const abuseCheck = checkDataAbuse({
+                kills, deaths, finalKills, finalDeaths, 
+                bedsBroken, bedsLost, wins, losses
+            });
+            
+            // 如果有异常数据
+            if (!abuseCheck.valid) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('ratingDisplay').style.display = 'none';
+                document.getElementById('errorDetails').textContent = abuseCheck.message;
+                document.getElementById('errorDetailsEn').textContent = abuseCheck.messageEn;
+                
+                // 添加抖动动画
+                document.getElementById('errorMessage').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.animation = '';
+                }, 500);
+                return;
+            }
+            
+            // 正常情况显示评级
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('ratingDisplay').style.display = 'block';
             
             // 执行评级计算
             const combat = calculateCombat(kills, deaths, finalKills, finalDeaths);
@@ -792,54 +888,9 @@
             const preRating = combat * finalDom * strategic * survival * winRate;
             const brRating = preRating * (0.9 + 0.1 * reliability);
             
-            // 计算关键指标
-            const kdRatio = (kills / deaths).toFixed(2);
-            const fkdRatio = (finalKills / finalDeaths).toFixed(2);
-            const bbblRatio = (bedsBroken / bedsLost).toFixed(2);
-            const deathRate = ((deaths / kills) + (finalDeaths / finalKills)).toFixed(2);
-            const totalKills = kills + finalKills;
-            const totalDeaths = deaths + finalDeaths;
-            const totalGames = wins + losses;
-            const winRatePercent = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : 0;
-            
             // 更新显示
             document.querySelector('.rating-value').textContent = brRating.toFixed(2);
             document.querySelector('.rating-level').textContent = getRatingLevel(brRating);
-            
-            // 更新维度分数
-            const dimensionScores = document.querySelectorAll('.dimension-score');
-            dimensionScores[0].textContent = combat.toFixed(2);
-            dimensionScores[1].textContent = finalDom.toFixed(2);
-            dimensionScores[2].textContent = strategic.toFixed(2);
-            dimensionScores[3].textContent = survival.toFixed(2);
-            dimensionScores[4].textContent = winRate.toFixed(2);
-            
-            // 更新关键指标
-            const statValues = document.querySelectorAll('.stat-value');
-            statValues[0].textContent = kdRatio; // K/D
-            statValues[1].textContent = kills.toLocaleString(); // Kills
-            statValues[2].textContent = fkdRatio; // FK/D
-            statValues[3].textContent = finalKills.toLocaleString(); // Final Kills
-            statValues[4].textContent = bbblRatio; // BB/BL
-            statValues[5].textContent = bedsBroken.toLocaleString(); // Beds Broken
-            statValues[6].textContent = totalDeaths.toLocaleString(); // Total Deaths
-            statValues[7].textContent = deathRate; // Death Rate
-            statValues[8].textContent = `${winRatePercent}%`; // Win Rate
-            statValues[9].textContent = totalGames.toLocaleString(); // Total Games
-            
-            // 更新进度条
-            const progressBars = document.querySelectorAll('.progress-bar');
-            progressBars[0].style.width = `${(combat / 2) * 100}%`;
-            progressBars[1].style.width = `${(finalDom / 3) * 100}%`;
-            progressBars[2].style.width = `${(strategic / 3) * 100}%`;
-            progressBars[3].style.width = `${survival * 100}%`;
-            progressBars[4].style.width = `${winRate * 100}%`;
-            
-            // 更新等级标签
-            updateLevelBadges(combat, finalDom, strategic, survival, winRate);
-            
-            // 更新权威性部分
-            document.querySelector('.authority-item .stat-value').textContent = `${totalGames.toLocaleString()} ${document.querySelector('.lang-zh') ? '场' : 'Games'}`;
             
             // 更新雷达图
             updateRadarChart(combat, finalDom, strategic, survival, winRate);
@@ -850,6 +901,70 @@
                 document.querySelector('.result-card').style.animation = 'fadeIn 0.8s ease-out';
             }, 10);
         });
+
+        // 防刷分检查算法
+        function checkDataAbuse(data) {
+            const { kills, deaths, finalKills, finalDeaths, bedsBroken, bedsLost, wins, losses } = data;
+            const totalGames = wins + losses;
+            const totalDeaths = deaths + finalDeaths;
+            
+            // 1. 死亡数据不一致检查
+            if (deaths === 0 && finalDeaths === 0 && totalDeaths > 0) {
+                return {
+                    valid: false,
+                    message: "死亡数据不一致：输入0死亡但系统计算显示" + totalDeaths + "次死亡",
+                    messageEn: "Death data inconsistency: 0 deaths input but system calculated " + totalDeaths + " deaths"
+                };
+            }
+            
+            // 2. 场次阈值检查
+            if (totalGames < 100) {
+                return {
+                    valid: false,
+                    message: "数据样本不足：总场次" + totalGames + " < 100，评级结果不可靠",
+                    messageEn: "Insufficient data sample: total games " + totalGames + " < 100, rating unreliable"
+                };
+            }
+            
+            // 3. 极端值检查
+            if (totalGames > 50 && (deaths === 0 || finalDeaths === 0)) {
+                return {
+                    valid: false,
+                    message: "异常数据：在" + totalGames + "场游戏中死亡数为0，可能存在刷分行为",
+                    messageEn: "Abnormal data: 0 deaths in " + totalGames + " games, possible cheating"
+                };
+            }
+            
+            // 4. 摧毁床数合理性检查
+            if (bedsBroken > wins * 3) {
+                return {
+                    valid: false,
+                    message: "摧毁床数异常：超过胜场数允许的最大值（" + wins + "胜场最多" + (wins * 3) + "床）",
+                    messageEn: "Abnormal beds broken: exceeds maximum allowed by wins (" + wins + " wins allow max " + (wins * 3) + " beds)"
+                };
+            }
+            
+            // 5. 生存效率异常检查
+            const survival = calculateSurvival(kills, deaths, finalKills, finalDeaths);
+            if (deaths === 0 && finalDeaths === 0 && survival < 0.9) {
+                return {
+                    valid: false,
+                    message: "生存效率异常：0死亡但生存效率仅为" + survival.toFixed(2),
+                    messageEn: "Survival efficiency anomaly: 0 deaths but survival efficiency only " + survival.toFixed(2)
+                };
+            }
+            
+            // 6. 完美数据检查
+            if (deaths === 0 && finalDeaths === 0 && bedsLost === 0 && losses === 0 && totalGames > 20) {
+                return {
+                    valid: false,
+                    message: "异常完美数据：在" + totalGames + "场游戏中0死亡0失败0丢床",
+                    messageEn: "Abnormally perfect data: 0 deaths, 0 losses, 0 beds lost in " + totalGames + " games"
+                };
+            }
+            
+            return { valid: true };
+        }
 
         // 雷达图实例
         let radarChart = null;
@@ -945,29 +1060,34 @@
 
         // 模拟计算函数
         function calculateCombat(K, D, FK, FD) {
-            const kd = Math.max(0.1, K / D);
-            const fkd = Math.max(0.1, FK / FD);
+            // 处理0死亡的情况
+            const kd = D === 0 ? K / 0.001 : K / D;
+            const fkd = FD === 0 ? FK / 0.001 : FK / FD;
             const combat = (0.7 * Math.log(1 + kd) + 1.3 * Math.log(1 + fkd)) / 2;
             const decay = Math.min(1, Math.sqrt(K + FK) / 100);
             return combat * decay;
         }
 
         function calculateFinalDom(FK, FD) {
-            const ratio = Math.sqrt(FK / FD);
+            // 处理0死亡的情况
+            const ratio = FD === 0 ? FK / 0.001 : FK / FD;
             const net = (FK - FD) / 100;
             const contribution = 0.8 + 0.2 * Math.tanh(net);
-            return ratio * contribution;
+            return Math.sqrt(ratio) * contribution;
         }
 
         function calculateStrategic(BB, BL) {
-            const ratio = Math.pow(BB / BL, 0.7);
+            // 处理0丢床的情况
+            const ratio = BL === 0 ? BB / 0.001 : BB / BL;
             const sample = Math.min(1.5, Math.log(1 + BB) / Math.log(500));
-            return 0.5 + 0.5 * ratio * sample;
+            return 0.5 + 0.5 * Math.pow(ratio, 0.7) * sample;
         }
 
         function calculateSurvival(K, D, FK, FD) {
-            const deathRatio = (D / K) + (FD / FK);
-            return Math.exp(-0.5 * deathRatio);
+            // 处理0死亡的情况
+            const deathRatio1 = D === 0 ? 0 : D / K;
+            const deathRatio2 = FD === 0 ? 0 : FD / FK;
+            return Math.exp(-0.5 * (deathRatio1 + deathRatio2));
         }
         
         function calculateWinRate(W, L) {
@@ -993,65 +1113,6 @@
             if (rating < 3.0) return document.querySelector('.lang-zh') ? '专家级玩家' : 'Expert Player';
             if (rating < 5.0) return document.querySelector('.lang-zh') ? '大师级玩家' : 'Master Player';
             return document.querySelector('.lang-zh') ? '传奇级玩家' : 'Legendary Player';
-        }
-        
-        function updateLevelBadges(combat, finalDom, strategic, survival, winRate) {
-            const levelBadges = document.querySelectorAll('.dimension-level');
-            
-            // 更新常规作战效率等级
-            levelBadges[0].className = getCombatLevel(combat) + ' dimension-level lang-zh';
-            levelBadges[1].className = getCombatLevel(combat) + ' dimension-level lang-en';
-            
-            // 更新终局统治力等级
-            levelBadges[2].className = getFinalDomLevel(finalDom) + ' dimension-level lang-zh';
-            levelBadges[3].className = getFinalDomLevel(finalDom) + ' dimension-level lang-en';
-            
-            // 更新战略资源效率等级
-            levelBadges[4].className = getStrategicLevel(strategic) + ' dimension-level lang-zh';
-            levelBadges[5].className = getStrategicLevel(strategic) + ' dimension-level lang-en';
-            
-            // 更新生存效率等级
-            levelBadges[6].className = getSurvivalLevel(survival) + ' dimension-level lang-zh';
-            levelBadges[7].className = getSurvivalLevel(survival) + ' dimension-level lang-en';
-            
-            // 更新胜率系数等级
-            levelBadges[8].className = getWinRateLevel(winRate) + ' dimension-level lang-zh';
-            levelBadges[9].className = getWinRateLevel(winRate) + ' dimension-level lang-en';
-        }
-        
-        function getCombatLevel(score) {
-            if (score >= 1.2) return 'level-excellent';
-            if (score >= 0.8) return 'level-good';
-            if (score >= 0.5) return 'level-average';
-            return 'level-poor';
-        }
-        
-        function getFinalDomLevel(score) {
-            if (score >= 2.5) return 'level-excellent';
-            if (score >= 1.8) return 'level-good';
-            if (score >= 1.0) return 'level-average';
-            return 'level-poor';
-        }
-        
-        function getStrategicLevel(score) {
-            if (score >= 1.8) return 'level-excellent';
-            if (score >= 1.2) return 'level-good';
-            if (score >= 0.8) return 'level-average';
-            return 'level-poor';
-        }
-        
-        function getSurvivalLevel(score) {
-            if (score >= 0.8) return 'level-excellent';
-            if (score >= 0.6) return 'level-good';
-            if (score >= 0.4) return 'level-average';
-            return 'level-poor';
-        }
-        
-        function getWinRateLevel(score) {
-            if (score >= 0.95) return 'level-excellent';
-            if (score >= 0.85) return 'level-good';
-            if (score >= 0.7) return 'level-average';
-            return 'level-poor';
         }
 
         // 初始化页面
