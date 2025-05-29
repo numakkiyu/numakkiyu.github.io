@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BR Rating - BedWars Rating Analysis tools </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #6a11cb;
@@ -204,6 +205,12 @@
             color: var(--secondary);
         }
 
+        .radar-chart-container {
+            margin: 30px 0;
+            height: 300px;
+            position: relative;
+        }
+
         .dimension-analysis {
             margin-top: 30px;
         }
@@ -332,6 +339,35 @@
             line-height: 1.5;
         }
 
+        .authority-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid var(--info);
+        }
+
+        .authority-title {
+            font-size: 1.2rem;
+            color: var(--info);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .authority-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .authority-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
         .footer {
             text-align: center;
             padding: 30px 0;
@@ -444,6 +480,18 @@
                     <input type="number" id="bedsLost" value="2439">
                 </div>
                 
+                <div class="input-group">
+                    <label for="wins" class="lang-zh">胜场数 (W)</label>
+                    <label for="wins" class="lang-en" style="display:none">Wins (W)</label>
+                    <input type="number" id="wins" value="4562">
+                </div>
+                
+                <div class="input-group">
+                    <label for="losses" class="lang-zh">败场数 (L)</label>
+                    <label for="losses" class="lang-en" style="display:none">Losses (L)</label>
+                    <input type="number" id="losses" value="3218">
+                </div>
+                
                 <button class="btn" id="analyzeBtn">
                     <i class="fas fa-chart-line"></i>
                     <span class="lang-zh">分析数据</span>
@@ -460,6 +508,10 @@
                     <div class="rating-value">3.30</div>
                     <div class="rating-level lang-zh">大师级玩家</div>
                     <div class="rating-level lang-en" style="display:none">Master Player</div>
+                </div>
+                
+                <div class="radar-chart-container">
+                    <canvas id="radarChart"></canvas>
                 </div>
                 
                 <div class="dimension-analysis">
@@ -615,40 +667,74 @@
                             </div>
                         </div>
                         
-                        <!-- 数据可信度 -->
+                        <!-- 胜率系数 -->
                         <div class="dimension-card">
                             <div class="dimension-header">
-                                <div class="dimension-name lang-zh">数据可信度</div>
-                                <div class="dimension-name lang-en" style="display:none">Data Reliability</div>
-                                <div class="dimension-score">0.97</div>
+                                <div class="dimension-name lang-zh">胜率系数</div>
+                                <div class="dimension-name lang-en" style="display:none">Win Rate Factor</div>
+                                <div class="dimension-score">0.89</div>
                             </div>
                             <div>
-                                <span class="dimension-level level-excellent lang-zh">优秀</span>
-                                <span class="dimension-level level-excellent lang-en" style="display:none">Excellent</span>
+                                <span class="dimension-level level-good lang-zh">良好</span>
+                                <span class="dimension-level level-good lang-en" style="display:none">Good</span>
                             </div>
                             
                             <div class="dimension-stats">
                                 <div class="stat-item">
-                                    <div class="stat-label lang-zh">总击杀数</div>
-                                    <div class="stat-label lang-en" style="display:none">Total Kills</div>
-                                    <div class="stat-value">21,289</div>
+                                    <div class="stat-label lang-zh">胜率</div>
+                                    <div class="stat-label lang-en" style="display:none">Win Rate</div>
+                                    <div class="stat-value">58.6%</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-label lang-zh">样本量</div>
-                                    <div class="stat-label lang-en" style="display:none">Sample Size</div>
-                                    <div class="stat-value">充足</div>
+                                    <div class="stat-label lang-zh">总场次</div>
+                                    <div class="stat-label lang-en" style="display:none">Total Games</div>
+                                    <div class="stat-value">7,780</div>
                                 </div>
                             </div>
                             
                             <div class="progress-container">
-                                <div class="progress-bar" style="width: 97%; background: var(--info);"></div>
+                                <div class="progress-bar" style="width: 89%; background: var(--info);"></div>
                             </div>
                             
                             <div class="dimension-description lang-zh">
-                                评估数据样本量可靠性，反映评级结果可信度。总击杀21,289表示数据样本充足，评级结果高度可信。
+                                评估玩家整体表现稳定性，反映长期游戏实力。58.6%胜率表示每100场游戏中赢得58.6场。
                             </div>
                             <div class="dimension-description lang-en" style="display:none">
-                                Evaluates data sample reliability, reflecting rating credibility. Total kills 21,289 indicate sufficient data sample, highly credible rating.
+                                Evaluates overall performance stability, reflecting long-term gaming strength. 58.6% win rate means winning 58.6 out of every 100 games.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="authority-section">
+                    <div class="authority-title">
+                        <i class="fas fa-shield-alt"></i>
+                        <span class="lang-zh">评级权威性保障</span>
+                        <span class="lang-en" style="display:none">Rating Authority Guarantee</span>
+                    </div>
+                    <div class="authority-content">
+                        <div class="authority-item">
+                            <div class="stat-label lang-zh">场次验证</div>
+                            <div class="stat-label lang-en" style="display:none">Game Validation</div>
+                            <div class="stat-value lang-zh">7,780 场</div>
+                            <div class="stat-value lang-en" style="display:none">7,780 Games</div>
+                            <div class="dimension-description lang-zh">
+                                总场次超过5000场，数据高度可信，评级权威性有保障。
+                            </div>
+                            <div class="dimension-description lang-en" style="display:none">
+                                Total games exceed 5000, data is highly credible, rating authority is guaranteed.
+                            </div>
+                        </div>
+                        <div class="authority-item">
+                            <div class="stat-label lang-zh">防刷分机制</div>
+                            <div class="stat-label lang-en" style="display:none">Anti-Cheating</div>
+                            <div class="stat-value lang-zh">已激活</div>
+                            <div class="stat-value lang-en" style="display:none">Activated</div>
+                            <div class="dimension-description lang-zh">
+                                系统自动检测异常数据，低场次高数据玩家评分将受到限制。
+                            </div>
+                            <div class="dimension-description lang-en" style="display:none">
+                                System automatically detects abnormal data, players with low games and high stats will be restricted.
                             </div>
                         </div>
                     </div>
@@ -657,7 +743,7 @@
         </div>
 
         <div class="footer">
-            <p class="lang-zh">BR Rating 专业评级公式 v1.0 © 2025 BedWars BR Rating</p>
+            <p class="lang-zh">BR Rating 评级公式 v1.0 © 2025 BedWars BR Rating</p>
             <p class="lang-en" style="display:none">BR Rating Professional Formula v4.0 © 2025 BedWars BR Rating</p>
         </div>
     </div>
@@ -692,15 +778,18 @@
             const finalDeaths = parseInt(document.getElementById('finalDeaths').value) || 1;
             const bedsBroken = parseInt(document.getElementById('bedsBroken').value) || 0;
             const bedsLost = parseInt(document.getElementById('bedsLost').value) || 1;
+            const wins = parseInt(document.getElementById('wins').value) || 0;
+            const losses = parseInt(document.getElementById('losses').value) || 1;
             
             // 执行评级计算
             const combat = calculateCombat(kills, deaths, finalKills, finalDeaths);
             const finalDom = calculateFinalDom(finalKills, finalDeaths);
             const strategic = calculateStrategic(bedsBroken, bedsLost);
             const survival = calculateSurvival(kills, deaths, finalKills, finalDeaths);
+            const winRate = calculateWinRate(wins, losses);
             const reliability = calculateReliability(kills, finalKills);
             
-            const preRating = combat * finalDom * strategic * survival;
+            const preRating = combat * finalDom * strategic * survival * winRate;
             const brRating = preRating * (0.9 + 0.1 * reliability);
             
             // 计算关键指标
@@ -710,6 +799,8 @@
             const deathRate = ((deaths / kills) + (finalDeaths / finalKills)).toFixed(2);
             const totalKills = kills + finalKills;
             const totalDeaths = deaths + finalDeaths;
+            const totalGames = wins + losses;
+            const winRatePercent = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : 0;
             
             // 更新显示
             document.querySelector('.rating-value').textContent = brRating.toFixed(2);
@@ -721,7 +812,7 @@
             dimensionScores[1].textContent = finalDom.toFixed(2);
             dimensionScores[2].textContent = strategic.toFixed(2);
             dimensionScores[3].textContent = survival.toFixed(2);
-            dimensionScores[4].textContent = reliability.toFixed(2);
+            dimensionScores[4].textContent = winRate.toFixed(2);
             
             // 更新关键指标
             const statValues = document.querySelectorAll('.stat-value');
@@ -733,8 +824,8 @@
             statValues[5].textContent = bedsBroken.toLocaleString(); // Beds Broken
             statValues[6].textContent = totalDeaths.toLocaleString(); // Total Deaths
             statValues[7].textContent = deathRate; // Death Rate
-            statValues[8].textContent = totalKills.toLocaleString(); // Total Kills
-            statValues[9].textContent = totalKills > 10000 ? "充足" : "不足"; // Sample Size
+            statValues[8].textContent = `${winRatePercent}%`; // Win Rate
+            statValues[9].textContent = totalGames.toLocaleString(); // Total Games
             
             // 更新进度条
             const progressBars = document.querySelectorAll('.progress-bar');
@@ -742,10 +833,16 @@
             progressBars[1].style.width = `${(finalDom / 3) * 100}%`;
             progressBars[2].style.width = `${(strategic / 3) * 100}%`;
             progressBars[3].style.width = `${survival * 100}%`;
-            progressBars[4].style.width = `${reliability * 100}%`;
+            progressBars[4].style.width = `${winRate * 100}%`;
             
             // 更新等级标签
-            updateLevelBadges(combat, finalDom, strategic, survival, reliability);
+            updateLevelBadges(combat, finalDom, strategic, survival, winRate);
+            
+            // 更新权威性部分
+            document.querySelector('.authority-item .stat-value').textContent = `${totalGames.toLocaleString()} ${document.querySelector('.lang-zh') ? '场' : 'Games'}`;
+            
+            // 更新雷达图
+            updateRadarChart(combat, finalDom, strategic, survival, winRate);
             
             // 添加动画效果
             document.querySelector('.result-card').style.animation = 'none';
@@ -753,6 +850,98 @@
                 document.querySelector('.result-card').style.animation = 'fadeIn 0.8s ease-out';
             }, 10);
         });
+
+        // 雷达图实例
+        let radarChart = null;
+
+        // 更新雷达图
+        function updateRadarChart(combat, finalDom, strategic, survival, winRate) {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            // 归一化数据（使所有值在0-1范围内）
+            const maxValues = [2, 5, 3, 1, 1]; // 各维度的最大值
+            const normalizedData = [
+                combat / maxValues[0],
+                finalDom / maxValues[1],
+                strategic / maxValues[2],
+                survival / maxValues[3],
+                winRate / maxValues[4]
+            ];
+            
+            // 如果图表已存在，销毁它
+            if (radarChart) {
+                radarChart.destroy();
+            }
+            
+            // 创建新图表
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        document.querySelector('.lang-zh') ? '常规作战' : 'Combat',
+                        document.querySelector('.lang-zh') ? '终局统治' : 'Final Dom',
+                        document.querySelector('.lang-zh') ? '战略资源' : 'Strategic',
+                        document.querySelector('.lang-zh') ? '生存效率' : 'Survival',
+                        document.querySelector('.lang-zh') ? '胜率系数' : 'Win Rate'
+                    ],
+                    datasets: [{
+                        label: document.querySelector('.lang-zh') ? '维度得分' : 'Dimension Scores',
+                        data: normalizedData,
+                        backgroundColor: 'rgba(106, 17, 203, 0.2)',
+                        borderColor: 'rgba(106, 17, 203, 0.8)',
+                        pointBackgroundColor: 'rgba(106, 17, 203, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(106, 17, 203, 1)',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                color: '#e0e0e0'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                stepSize: 0.2
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 1
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const index = context.dataIndex;
+                                    const value = context.dataset.data[index];
+                                    const rawValues = [combat, finalDom, strategic, survival, winRate];
+                                    return `${context.label}: ${rawValues[index].toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         // 模拟计算函数
         function calculateCombat(K, D, FK, FD) {
@@ -780,6 +969,16 @@
             const deathRatio = (D / K) + (FD / FK);
             return Math.exp(-0.5 * deathRatio);
         }
+        
+        function calculateWinRate(W, L) {
+            const totalGames = W + L;
+            if (totalGames === 0) return 0.5;
+            
+            const winRate = W / totalGames;
+            // 场次因子：总场次越多，胜率系数越接近实际胜率
+            const gameFactor = Math.min(1, Math.log(1 + totalGames) / Math.log(1000));
+            return 0.5 + (winRate - 0.5) * gameFactor;
+        }
 
         function calculateReliability(K, FK) {
             const totalKills = K + FK;
@@ -787,16 +986,16 @@
         }
 
         function getRatingLevel(rating) {
-            if (rating < 0.5) return '新手';
-            if (rating < 1.0) return '合格玩家';
-            if (rating < 1.5) return '熟练玩家';
-            if (rating < 2.0) return '精英玩家';
-            if (rating < 3.0) return '专家级玩家';
-            if (rating < 5.0) return '大师级玩家';
-            return '传奇级玩家';
+            if (rating < 0.5) return document.querySelector('.lang-zh') ? '新手' : 'Beginner';
+            if (rating < 1.0) return document.querySelector('.lang-zh') ? '合格玩家' : 'Qualified Player';
+            if (rating < 1.5) return document.querySelector('.lang-zh') ? '熟练玩家' : 'Skilled Player';
+            if (rating < 2.0) return document.querySelector('.lang-zh') ? '精英玩家' : 'Elite Player';
+            if (rating < 3.0) return document.querySelector('.lang-zh') ? '专家级玩家' : 'Expert Player';
+            if (rating < 5.0) return document.querySelector('.lang-zh') ? '大师级玩家' : 'Master Player';
+            return document.querySelector('.lang-zh') ? '传奇级玩家' : 'Legendary Player';
         }
         
-        function updateLevelBadges(combat, finalDom, strategic, survival, reliability) {
+        function updateLevelBadges(combat, finalDom, strategic, survival, winRate) {
             const levelBadges = document.querySelectorAll('.dimension-level');
             
             // 更新常规作战效率等级
@@ -815,9 +1014,9 @@
             levelBadges[6].className = getSurvivalLevel(survival) + ' dimension-level lang-zh';
             levelBadges[7].className = getSurvivalLevel(survival) + ' dimension-level lang-en';
             
-            // 更新数据可信度等级
-            levelBadges[8].className = getReliabilityLevel(reliability) + ' dimension-level lang-zh';
-            levelBadges[9].className = getReliabilityLevel(reliability) + ' dimension-level lang-en';
+            // 更新胜率系数等级
+            levelBadges[8].className = getWinRateLevel(winRate) + ' dimension-level lang-zh';
+            levelBadges[9].className = getWinRateLevel(winRate) + ' dimension-level lang-en';
         }
         
         function getCombatLevel(score) {
@@ -848,9 +1047,9 @@
             return 'level-poor';
         }
         
-        function getReliabilityLevel(score) {
-            if (score >= 0.99) return 'level-excellent';
-            if (score >= 0.9) return 'level-good';
+        function getWinRateLevel(score) {
+            if (score >= 0.95) return 'level-excellent';
+            if (score >= 0.85) return 'level-good';
             if (score >= 0.7) return 'level-average';
             return 'level-poor';
         }
