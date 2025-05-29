@@ -148,6 +148,7 @@
 
         .input-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         .input-group label {
@@ -172,6 +173,24 @@
             border-color: var(--secondary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.3);
+        }
+
+        .input-group .input-warning {
+            position: absolute;
+            right: 15px;
+            top: 42px;
+            color: var(--warning);
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .input-group .input-error {
+            position: absolute;
+            right: 15px;
+            top: 42px;
+            color: var(--danger);
+            font-size: 1.2rem;
+            display: none;
         }
 
         .result-card {
@@ -367,6 +386,49 @@
             padding: 15px;
             border-radius: 10px;
         }
+        
+        .data-alert {
+            background: rgba(255, 87, 87, 0.2);
+            border-left: 4px solid var(--danger);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            animation: alertPulse 2s infinite;
+            display: none;
+        }
+        
+        .data-alert-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+        
+        .data-alert ul {
+            padding-left: 25px;
+        }
+        
+        .data-alert li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        .data-valid {
+            background: rgba(0, 184, 148, 0.2);
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .data-valid-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--success);
+            margin-bottom: 10px;
+        }
 
         .footer {
             text-align: center;
@@ -391,6 +453,12 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.03); }
             100% { transform: scale(1); }
+        }
+        
+        @keyframes alertPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 87, 87, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 87, 87, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 87, 87, 0); }
         }
 
         /* Language toggle */
@@ -448,48 +516,64 @@
                     <label for="kills" class="lang-zh">常规击杀 (K)</label>
                     <label for="kills" class="lang-en" style="display:none">Regular Kills (K)</label>
                     <input type="number" id="kills" value="10906">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：击杀数异常高"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <div class="input-group">
                     <label for="deaths" class="lang-zh">常规死亡 (D)</label>
                     <label for="deaths" class="lang-en" style="display:none">Regular Deaths (D)</label>
                     <input type="number" id="deaths" value="10132">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：死亡数为0"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <div class="input-group">
                     <label for="finalKills" class="lang-zh">最终击杀 (FK)</label>
                     <label for="finalKills" class="lang-en" style="display:none">Final Kills (FK)</label>
                     <input type="number" id="finalKills" value="10383">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：击杀数异常高"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <div class="input-group">
                     <label for="finalDeaths" class="lang-zh">最终死亡 (FD)</label>
                     <label for="finalDeaths" class="lang-en" style="display:none">Final Deaths (FD)</label>
                     <input type="number" id="finalDeaths" value="1958">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：死亡数为0"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <div class="input-group">
                     <label for="bedsBroken" class="lang-zh">摧毁床数 (BB)</label>
                     <label for="bedsBroken" class="lang-en" style="display:none">Beds Broken (BB)</label>
                     <input type="number" id="bedsBroken" value="5523">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：摧毁床数异常高"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <div class="input-group">
                     <label for="bedsLost" class="lang-zh">丢失床数 (BL)</label>
                     <label for="bedsLost" class="lang-en" style="display:none">Beds Lost (BL)</label>
                     <input type="number" id="bedsLost" value="2439">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：丢失床数为0"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <div class="input-group">
                     <label for="wins" class="lang-zh">胜场数 (W)</label>
                     <label for="wins" class="lang-en" style="display:none">Wins (W)</label>
                     <input type="number" id="wins" value="4562">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：胜场数异常高"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <div class="input-group">
                     <label for="losses" class="lang-zh">败场数 (L)</label>
                     <label for="losses" class="lang-en" style="display:none">Losses (L)</label>
                     <input type="number" id="losses" value="3218">
+                    <i class="fas fa-exclamation-triangle input-warning" title="警告：败场数为0"></i>
+                    <i class="fas fa-exclamation-circle input-error" title="错误：数据异常"></i>
                 </div>
                 
                 <button class="btn" id="analyzeBtn">
@@ -505,9 +589,36 @@
                 <div class="rating-display">
                     <div class="lang-zh">综合评分</div>
                     <div class="lang-en" style="display:none">Overall Rating</div>
-                    <div class="rating-value">3.30</div>
-                    <div class="rating-level lang-zh">大师级玩家</div>
-                    <div class="rating-level lang-en" style="display:none">Master Player</div>
+                    <div class="rating-value">1.93</div>
+                    <div class="rating-level lang-zh">精英玩家</div>
+                    <div class="rating-level lang-en" style="display:none">Elite Player</div>
+                </div>
+                
+                <div class="data-alert" id="dataAlert">
+                    <div class="data-alert-title">
+                        <i class="fas fa-radiation"></i>
+                        <h3 class="lang-zh">异常数据检测</h3>
+                        <h3 class="lang-en" style="display:none">Abnormal Data Detected</h3>
+                    </div>
+                    <ul id="alertList">
+                        <!-- 动态生成异常数据列表 -->
+                    </ul>
+                    <p class="lang-zh" style="margin-top: 10px; color: var(--danger); font-weight: 600;">
+                        警告：检测到异常数据模式，评级结果可能无效
+                    </p>
+                    <p class="lang-en" style="margin-top: 10px; color: var(--danger); font-weight: 600; display: none;">
+                        Warning: Abnormal data pattern detected, rating may be invalid
+                    </p>
+                </div>
+                
+                <div class="data-valid" id="dataValid">
+                    <div class="data-valid-title">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 class="lang-zh">数据验证通过</h3>
+                        <h3 class="lang-en" style="display:none">Data Validation Passed</h3>
+                    </div>
+                    <p class="lang-zh">未检测到异常数据模式，评级结果有效。</p>
+                    <p class="lang-en" style="display:none">No abnormal data patterns detected, rating valid.</p>
                 </div>
                 
                 <div class="radar-chart-container">
@@ -524,11 +635,11 @@
                             <div class="dimension-header">
                                 <div class="dimension-name lang-zh">常规作战效率</div>
                                 <div class="dimension-name lang-en" style="display:none">Combat Efficiency</div>
-                                <div class="dimension-score">0.51</div>
+                                <div class="dimension-score">1.45</div>
                             </div>
                             <div>
-                                <span class="dimension-level level-average lang-zh">合格</span>
-                                <span class="dimension-level level-average lang-en" style="display:none">Average</span>
+                                <span class="dimension-level level-good lang-zh">良好</span>
+                                <span class="dimension-level level-good lang-en" style="display:none">Good</span>
                             </div>
                             
                             <div class="dimension-stats">
@@ -545,7 +656,7 @@
                             </div>
                             
                             <div class="progress-container">
-                                <div class="progress-bar" style="width: 25.5%; background: var(--warning);"></div>
+                                <div class="progress-bar" style="width: 72.5%; background: var(--success);"></div>
                             </div>
                             
                             <div class="dimension-description lang-zh">
@@ -722,19 +833,19 @@
                                 总场次超过5000场，数据高度可信，评级权威性有保障。
                             </div>
                             <div class="dimension-description lang-en" style="display:none">
-                                Total games exceed 5000, data is highly credible, rating authority is guaranteed.
+                                Total games exceed 5000, highly credible data, rating authority guaranteed.
                             </div>
                         </div>
                         <div class="authority-item">
                             <div class="stat-label lang-zh">防刷分机制</div>
                             <div class="stat-label lang-en" style="display:none">Anti-Cheating</div>
-                            <div class="stat-value lang-zh">已激活</div>
-                            <div class="stat-value lang-en" style="display:none">Activated</div>
+                            <div class="stat-value lang-zh" style="color: var(--success);">已进行异常防护</div>
+                            <div class="stat-value lang-en" style="color: var(--success); display:none">Abnormal protection has been performed</div>
                             <div class="dimension-description lang-zh">
-                                系统自动检测异常数据，低场次高数据玩家评分将受到限制。
+                                在未检测到异常数据时，评级结果有效；检测到异常数据时，评级结果无效
                             </div>
                             <div class="dimension-description lang-en" style="display:none">
-                                System automatically detects abnormal data, players with low games and high stats will be restricted.
+                                When no abnormal data is detected, the rating result is valid; when abnormal data is detected, the rating result is invalid
                             </div>
                         </div>
                     </div>
@@ -766,20 +877,86 @@
                         el.style.display = 'none';
                     }
                 });
+                
+                // 更新雷达图标签
+                if (radarChart) {
+                    updateRadarChart();
+                }
             }
         });
+
+        // 雷达图实例
+        let radarChart = null;
 
         // 分析按钮功能
         document.getElementById('analyzeBtn').addEventListener('click', function() {
             // 获取输入值
             const kills = parseInt(document.getElementById('kills').value) || 0;
-            const deaths = parseInt(document.getElementById('deaths').value) || 1;
+            const deaths = parseInt(document.getElementById('deaths').value) || 0;
             const finalKills = parseInt(document.getElementById('finalKills').value) || 0;
-            const finalDeaths = parseInt(document.getElementById('finalDeaths').value) || 1;
+            const finalDeaths = parseInt(document.getElementById('finalDeaths').value) || 0;
             const bedsBroken = parseInt(document.getElementById('bedsBroken').value) || 0;
-            const bedsLost = parseInt(document.getElementById('bedsLost').value) || 1;
+            const bedsLost = parseInt(document.getElementById('bedsLost').value) || 0;
             const wins = parseInt(document.getElementById('wins').value) || 0;
-            const losses = parseInt(document.getElementById('losses').value) || 1;
+            const losses = parseInt(document.getElementById('losses').value) || 0;
+            
+            // 执行防刷分检测
+            const { warnings, errors, valid } = checkDataValidity({
+                kills, deaths, finalKills, finalDeaths, 
+                bedsBroken, bedsLost, wins, losses
+            });
+            
+            // 更新输入字段警告状态
+            updateInputWarnings(warnings, errors);
+            
+            // 显示异常数据警告
+            const dataAlert = document.getElementById('dataAlert');
+            const dataValid = document.getElementById('dataValid');
+            
+            if (errors.length > 0) {
+                dataAlert.style.display = 'block';
+                dataValid.style.display = 'none';
+                
+                // 更新异常数据列表
+                const alertList = document.getElementById('alertList');
+                alertList.innerHTML = '';
+                
+                errors.forEach(error => {
+                    const li = document.createElement('li');
+                    li.className = 'lang-zh';
+                    li.textContent = error.message;
+                    alertList.appendChild(li);
+                    
+                    const liEn = document.createElement('li');
+                    liEn.className = 'lang-en';
+                    liEn.style.display = 'none';
+                    liEn.textContent = error.message.replace('检测到', 'Detected ').replace('存在异常', 'abnormal');
+                    alertList.appendChild(liEn);
+                });
+            } else if (warnings.length > 0) {
+                dataAlert.style.display = 'block';
+                dataValid.style.display = 'none';
+                
+                // 更新异常数据列表
+                const alertList = document.getElementById('alertList');
+                alertList.innerHTML = '';
+                
+                warnings.forEach(warning => {
+                    const li = document.createElement('li');
+                    li.className = 'lang-zh';
+                    li.textContent = warning.message;
+                    alertList.appendChild(li);
+                    
+                    const liEn = document.createElement('li');
+                    liEn.className = 'lang-en';
+                    liEn.style.display = 'none';
+                    liEn.textContent = warning.message.replace('检测到', 'Detected ').replace('可能存在异常', 'may be abnormal');
+                    alertList.appendChild(liEn);
+                });
+            } else {
+                dataAlert.style.display = 'none';
+                dataValid.style.display = 'block';
+            }
             
             // 执行评级计算
             const combat = calculateCombat(kills, deaths, finalKills, finalDeaths);
@@ -793,10 +970,11 @@
             const brRating = preRating * (0.9 + 0.1 * reliability);
             
             // 计算关键指标
-            const kdRatio = (kills / deaths).toFixed(2);
-            const fkdRatio = (finalKills / finalDeaths).toFixed(2);
-            const bbblRatio = (bedsBroken / bedsLost).toFixed(2);
-            const deathRate = ((deaths / kills) + (finalDeaths / finalKills)).toFixed(2);
+            const kdRatio = deaths > 0 ? (kills / deaths).toFixed(2) : '∞';
+            const fkdRatio = finalDeaths > 0 ? (finalKills / finalDeaths).toFixed(2) : '∞';
+            const bbblRatio = bedsLost > 0 ? (bedsBroken / bedsLost).toFixed(2) : '∞';
+            const deathRate = deaths + finalDeaths > 0 ? 
+                ((deaths / kills) + (finalDeaths / finalKills)).toFixed(2) : 0;
             const totalKills = kills + finalKills;
             const totalDeaths = deaths + finalDeaths;
             const totalGames = wins + losses;
@@ -839,7 +1017,46 @@
             updateLevelBadges(combat, finalDom, strategic, survival, winRate);
             
             // 更新权威性部分
-            document.querySelector('.authority-item .stat-value').textContent = `${totalGames.toLocaleString()} ${document.querySelector('.lang-zh') ? '场' : 'Games'}`;
+            const authorityValues = document.querySelectorAll('.authority-item .stat-value');
+            authorityValues[0].textContent = `${totalGames.toLocaleString()} ${document.querySelector('.lang-zh') ? '场' : 'Games'}`;
+            
+            // 更新场次验证描述 - 根据总场次显示不同描述
+            const gameValidationDesc = document.querySelectorAll('.authority-item .dimension-description');
+            if (totalGames < 100) {
+                gameValidationDesc[0].textContent = document.querySelector('.lang-zh') ? 
+                    '总场次不足100场，数据可信度低，评级仅供参考。' : 
+                    'Total games less than 100, low data credibility, rating for reference only.';
+            } else if (totalGames < 500) {
+                gameValidationDesc[0].textContent = document.querySelector('.lang-zh') ? 
+                    '总场次100-500场，数据基本可信，评级较为可靠。' : 
+                    'Total games 100-500, data basically credible, rating relatively reliable.';
+            } else {
+                // 总场次超过500场，显示高度可信
+                gameValidationDesc[0].textContent = document.querySelector('.lang-zh') ? 
+                    '总场次超过500场，数据高度可信，评级权威性有保障。' : 
+                    'Total games exceed 500, highly credible data, rating authority guaranteed.';
+            }
+            
+            // 更新防刷分机制状态
+            if (errors.length > 0) {
+                authorityValues[1].textContent = document.querySelector('.lang-zh') ? '已拦截' : 'Blocked';
+                authorityValues[1].style.color = 'var(--danger)';
+                gameValidationDesc[1].textContent = document.querySelector('.lang-zh') ? 
+                    `检测到${errors.length}项异常数据模式，评级结果无效。` : 
+                    `${errors.length} abnormal data patterns detected, rating invalid.`;
+            } else if (warnings.length > 0) {
+                authorityValues[1].textContent = document.querySelector('.lang-zh') ? '警告中' : 'Warning';
+                authorityValues[1].style.color = 'var(--warning)';
+                gameValidationDesc[1].textContent = document.querySelector('.lang-zh') ? 
+                    `检测到${warnings.length}项可疑数据，评级结果需谨慎参考。` : 
+                    `${warnings.length} suspicious data detected, use rating with caution.`;
+            } else {
+                authorityValues[1].textContent = document.querySelector('.lang-zh') ? '未检测到异常' : 'No issues';
+                authorityValues[1].style.color = 'var(--success)';
+                gameValidationDesc[1].textContent = document.querySelector('.lang-zh') ? 
+                    '未检测到异常数据模式，评级结果有效。' : 
+                    'No abnormal data patterns detected, rating valid.';
+            }
             
             // 更新雷达图
             updateRadarChart(combat, finalDom, strategic, survival, winRate);
@@ -851,8 +1068,91 @@
             }, 10);
         });
 
-        // 雷达图实例
-        let radarChart = null;
+        // 更新输入字段警告状态
+        function updateInputWarnings(warnings, errors) {
+            // 重置所有警告图标
+            document.querySelectorAll('.input-warning, .input-error').forEach(icon => {
+                icon.style.display = 'none';
+            });
+            
+            // 显示警告图标
+            warnings.forEach(warning => {
+                const field = warning.field;
+                const icon = document.querySelector(`#${field}`).parentNode.querySelector('.input-warning');
+                if (icon) icon.style.display = 'block';
+            });
+            
+            // 显示错误图标
+            errors.forEach(error => {
+                const field = error.field;
+                const icon = document.querySelector(`#${field}`).parentNode.querySelector('.input-error');
+                if (icon) icon.style.display = 'block';
+            });
+        }
+
+        // 智能防刷分检测算法
+        function checkDataValidity(data) {
+            const warnings = [];
+            const errors = [];
+            const totalGames = data.wins + data.losses;
+            
+            // 1. 死亡数为0但击杀数过高且场次较多
+            if (data.deaths === 0 && data.kills > 100 && totalGames > 20) {
+                errors.push({ 
+                    message: "检测到死亡数为0但击杀数过高，存在异常",
+                    field: 'deaths'
+                });
+            } else if (data.deaths === 0 && data.kills > 50) {
+                warnings.push({ 
+                    message: "检测到死亡数为0但击杀数较高，可能存在异常",
+                    field: 'deaths'
+                });
+            }
+            
+            // 2. 胜率100%且场次过多
+            if (data.losses === 0 && totalGames > 100) {
+                errors.push({ 
+                    message: `胜率100%且场次超过100场，存在异常（${totalGames}场全胜）`,
+                    field: 'losses'
+                });
+            } else if (data.losses === 0 && totalGames > 50) {
+                warnings.push({ 
+                    message: `胜率100%且场次超过50场，可能存在异常（${totalGames}场全胜）`,
+                    field: 'losses'
+                });
+            }
+            
+            // 3. 床丢失率为0且场次过多
+            if (data.bedsLost === 0 && totalGames > 50) {
+                errors.push({ 
+                    message: "床丢失率为0且场次超过50场，存在异常",
+                    field: 'bedsLost'
+                });
+            } else if (data.bedsLost === 0 && totalGames > 20) {
+                warnings.push({ 
+                    message: "床丢失率为0且场次超过20场，可能存在异常",
+                    field: 'bedsLost'
+                });
+            }
+            
+            // 4. 总场次与数据不匹配
+            if (data.bedsBroken > totalGames) {
+                errors.push({ 
+                    message: `摧毁床数(${data.bedsBroken}) 不可能大于总场次(${totalGames})`,
+                    field: 'bedsBroken'
+                });
+            }
+            
+            // 5. 低场次高数据警告
+            if (totalGames < 50 && (data.kills > 500 || data.finalKills > 500)) {
+                warnings.push({ 
+                    message: "低场次但击杀数异常高，可能存在异常",
+                    field: 'kills'
+                });
+            }
+            
+            return { warnings, errors, valid: errors.length === 0 };
+        }
 
         // 更新雷达图
         function updateRadarChart(combat, finalDom, strategic, survival, winRate) {
@@ -932,7 +1232,6 @@
                             callbacks: {
                                 label: function(context) {
                                     const index = context.dataIndex;
-                                    const value = context.dataset.data[index];
                                     const rawValues = [combat, finalDom, strategic, survival, winRate];
                                     return `${context.label}: ${rawValues[index].toFixed(2)}`;
                                 }
@@ -945,27 +1244,28 @@
 
         // 模拟计算函数
         function calculateCombat(K, D, FK, FD) {
-            const kd = Math.max(0.1, K / D);
-            const fkd = Math.max(0.1, FK / FD);
+            const kd = D > 0 ? Math.max(0.1, K / D) : 1.0;
+            const fkd = FD > 0 ? Math.max(0.1, FK / FD) : 1.0;
             const combat = (0.7 * Math.log(1 + kd) + 1.3 * Math.log(1 + fkd)) / 2;
             const decay = Math.min(1, Math.sqrt(K + FK) / 100);
             return combat * decay;
         }
 
         function calculateFinalDom(FK, FD) {
-            const ratio = Math.sqrt(FK / FD);
+            const ratio = FD > 0 ? Math.sqrt(FK / FD) : 1.0;
             const net = (FK - FD) / 100;
             const contribution = 0.8 + 0.2 * Math.tanh(net);
             return ratio * contribution;
         }
 
         function calculateStrategic(BB, BL) {
-            const ratio = Math.pow(BB / BL, 0.7);
+            const ratio = BL > 0 ? Math.pow(BB / BL, 0.7) : 1.0;
             const sample = Math.min(1.5, Math.log(1 + BB) / Math.log(500));
             return 0.5 + 0.5 * ratio * sample;
         }
 
         function calculateSurvival(K, D, FK, FD) {
+            if (K === 0 || FK === 0) return 0.5;
             const deathRatio = (D / K) + (FD / FK);
             return Math.exp(-0.5 * deathRatio);
         }
