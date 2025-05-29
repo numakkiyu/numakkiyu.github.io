@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BR Rating - BedWars Rating Analysis tools </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #ff7675;
+            --info: #0984e3;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(106, 17, 203, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--text-primary);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--secondary);
+        }
+
+        .card-title i {
+            font-size: 1.8rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.3);
+        }
+
+        .result-card {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .rating-display {
+            text-align: center;
+            margin: 20px 0;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rating-value {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 10px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .rating-level {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .dimension-analysis {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .dimension-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 4px solid var(--secondary);
+            transition: var(--transition);
+        }
+
+        .dimension-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .dimension-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .dimension-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .dimension-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dimension-level {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .level-good {
+            background: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+        }
+
+        .level-average {
+            background: rgba(253, 203, 110, 0.2);
+            color: var(--warning);
+        }
+
+        .level-poor {
+            background: rgba(255, 118, 117, 0.2);
+            color: var(--danger);
+        }
+
+        .level-excellent {
+            background: rgba(106, 17, 203, 0.2);
+            color: var(--primary);
+        }
+
+        .dimension-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+
+        .dimension-description {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* Language toggle */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-option {
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .lang-option.active {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-crown logo-icon"></i>
+                <h1>BR Rating</h1>
+            </div>
+            <div class="controls">
+                <div class="lang-toggle" id="langToggle">
+                    <div class="lang-option active" data-lang="zh">中文</div>
+                    <div class="lang-option" data-lang="en">English</div>
+                </div>
+                <button class="btn" id="calculateBtn">
+                    <i class="fas fa-calculator"></i>
+                    <span class="lang-zh">计算评级</span>
+                    <span class="lang-en" style="display:none">Calculate Rating</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-database"></i> <span class="lang-zh">输入游戏数据</span><span class="lang-en" style="display:none">Enter Game Data</span></h2>
+                
+                <div class="input-group">
+                    <label for="kills" class="lang-zh">常规击杀 (K)</label>
+                    <label for="kills" class="lang-en" style="display:none">Regular Kills (K)</label>
+                    <input type="number" id="kills" value="10906">
+                </div>
+                
+                <div class="input-group">
+                    <label for="deaths" class="lang-zh">常规死亡 (D)</label>
+                    <label for="deaths" class="lang-en" style="display:none">Regular Deaths (D)</label>
+                    <input type="number" id="deaths" value="10132">
+                </div>
+                
+                <div class="input-group">
+                    <label for="finalKills" class="lang-zh">最终击杀 (FK)</label>
+                    <label for="finalKills" class="lang-en" style="display:none">Final Kills (FK)</label>
+                    <input type="number" id="finalKills" value="10383">
+                </div>
+                
+                <div class="input-group">
+                    <label for="finalDeaths" class="lang-zh">最终死亡 (FD)</label>
+                    <label for="finalDeaths" class="lang-en" style="display:none">Final Deaths (FD)</label>
+                    <input type="number" id="finalDeaths" value="1958">
+                </div>
+                
+                <div class="input-group">
+                    <label for="bedsBroken" class="lang-zh">摧毁床数 (BB)</label>
+                    <label for="bedsBroken" class="lang-en" style="display:none">Beds Broken (BB)</label>
+                    <input type="number" id="bedsBroken" value="5523">
+                </div>
+                
+                <div class="input-group">
+                    <label for="bedsLost" class="lang-zh">丢失床数 (BL)</label>
+                    <label for="bedsLost" class="lang-en" style="display:none">Beds Lost (BL)</label>
+                    <input type="number" id="bedsLost" value="2439">
+                </div>
+                
+                <button class="btn" id="analyzeBtn">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="lang-zh">分析数据</span>
+                    <span class="lang-en" style="display:none">Analyze Data</span>
+                </button>
+            </div>
+
+            <div class="card result-card">
+                <h2 class="card-title"><i class="fas fa-chart-pie"></i> <span class="lang-zh">专业评级报告</span><span class="lang-en" style="display:none">Professional Rating Report</span></h2>
+                
+                <div class="rating-display">
+                    <div class="lang-zh">综合评分</div>
+                    <div class="lang-en" style="display:none">Overall Rating</div>
+                    <div class="rating-value">3.30</div>
+                    <div class="rating-level lang-zh">大师级玩家</div>
+                    <div class="rating-level lang-en" style="display:none">Master Player</div>
+                </div>
+                
+                <div class="dimension-analysis">
+                    <h3 class="section-title lang-zh"><i class="fas fa-layer-group"></i> 五维分析</h3>
+                    <h3 class="section-title lang-en" style="display:none"><i class="fas fa-layer-group"></i> Five-Dimensional Analysis</h3>
+                    
+                    <div class="dimension-grid">
+                        <!-- 常规作战效率 -->
+                        <div class="dimension-card">
+                            <div class="dimension-header">
+                                <div class="dimension-name lang-zh">常规作战效率</div>
+                                <div class="dimension-name lang-en" style="display:none">Combat Efficiency</div>
+                                <div class="dimension-score">0.51</div>
+                            </div>
+                            <div>
+                                <span class="dimension-level level-average lang-zh">合格</span>
+                                <span class="dimension-level level-average lang-en" style="display:none">Average</span>
+                            </div>
+                            
+                            <div class="dimension-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">K/D 比值</div>
+                                    <div class="stat-label lang-en" style="display:none">K/D Ratio</div>
+                                    <div class="stat-value">1.08</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">击杀数</div>
+                                    <div class="stat-label lang-en" style="display:none">Kills</div>
+                                    <div class="stat-value">10,906</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 25.5%; background: var(--warning);"></div>
+                            </div>
+                            
+                            <div class="dimension-description lang-zh">
+                                评估玩家在床存在时的PVP能力，反映常规阶段击杀效率。K/D比值1.08表示每死亡1次可击杀1.08名敌人。
+                            </div>
+                            <div class="dimension-description lang-en" style="display:none">
+                                Evaluates PVP ability when beds exist, reflecting killing efficiency in regular phase. K/D ratio 1.08 means 1.08 kills per death.
+                            </div>
+                        </div>
+                        
+                        <!-- 终局统治力 -->
+                        <div class="dimension-card">
+                            <div class="dimension-header">
+                                <div class="dimension-name lang-zh">终局统治力</div>
+                                <div class="dimension-name lang-en" style="display:none">Final Dominance</div>
+                                <div class="dimension-score">2.30</div>
+                            </div>
+                            <div>
+                                <span class="dimension-level level-excellent lang-zh">专家级</span>
+                                <span class="dimension-level level-excellent lang-en" style="display:none">Expert</span>
+                            </div>
+                            
+                            <div class="dimension-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">FK/D 比值</div>
+                                    <div class="stat-label lang-en" style="display:none">FK/D Ratio</div>
+                                    <div class="stat-value">5.30</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">最终击杀</div>
+                                    <div class="stat-label lang-en" style="display:none">Final Kills</div>
+                                    <div class="stat-value">10,383</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 76.7%; background: var(--primary);"></div>
+                            </div>
+                            
+                            <div class="dimension-description lang-zh">
+                                评估玩家在床摧毁后的终结能力，反映终局阶段统治力。FK/D比值5.30表示每死亡1次可击杀5.3名无床敌人。
+                            </div>
+                            <div class="dimension-description lang-en" style="display:none">
+                                Evaluates finishing ability after bed destruction, reflecting dominance in final phase. FK/D ratio 5.30 means 5.3 kills per death against bedless enemies.
+                            </div>
+                        </div>
+                        
+                        <!-- 战略资源效率 -->
+                        <div class="dimension-card">
+                            <div class="dimension-header">
+                                <div class="dimension-name lang-zh">战略资源效率</div>
+                                <div class="dimension-name lang-en" style="display:none">Strategic Efficiency</div>
+                                <div class="dimension-score">1.74</div>
+                            </div>
+                            <div>
+                                <span class="dimension-level level-good lang-zh">精英级</span>
+                                <span class="dimension-level level-good lang-en" style="display:none">Elite</span>
+                            </div>
+                            
+                            <div class="dimension-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">BB/BL 比值</div>
+                                    <div class="stat-label lang-en" style="display:none">BB/BL Ratio</div>
+                                    <div class="stat-value">2.26</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">摧毁床数</div>
+                                    <div class="stat-label lang-en" style="display:none">Beds Broken</div>
+                                    <div class="stat-value">5,523</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 58%; background: var(--success);"></div>
+                            </div>
+                            
+                            <div class="dimension-description lang-zh">
+                                评估玩家对战略资源（床）的控制能力，反映团队贡献。BB/BL比值2.26表示每丢失1张床可摧毁2.26张敌方床。
+                            </div>
+                            <div class="dimension-description lang-en" style="display:none">
+                                Evaluates control over strategic resources (beds), reflecting team contribution. BB/BL ratio 2.26 means 2.26 enemy beds destroyed per bed lost.
+                            </div>
+                        </div>
+                        
+                        <!-- 生存效率 -->
+                        <div class="dimension-card">
+                            <div class="dimension-header">
+                                <div class="dimension-name lang-zh">生存效率</div>
+                                <div class="dimension-name lang-en" style="display:none">Survival Efficiency</div>
+                                <div class="dimension-score">0.57</div>
+                            </div>
+                            <div>
+                                <span class="dimension-level level-poor lang-zh">需改进</span>
+                                <span class="dimension-level level-poor lang-en" style="display:none">Needs Improvement</span>
+                            </div>
+                            
+                            <div class="dimension-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">总死亡数</div>
+                                    <div class="stat-label lang-en" style="display:none">Total Deaths</div>
+                                    <div class="stat-value">12,090</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">死亡率</div>
+                                    <div class="stat-label lang-en" style="display:none">Death Rate</div>
+                                    <div class="stat-value">1.12</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 57%; background: var(--danger);"></div>
+                            </div>
+                            
+                            <div class="dimension-description lang-zh">
+                                评估玩家风险规避能力，反映生存策略有效性。死亡率1.12表示死亡次数高于击杀次数，生存策略需优化。
+                            </div>
+                            <div class="dimension-description lang-en" style="display:none">
+                                Evaluates risk avoidance ability, reflecting survival strategy effectiveness. Death rate 1.12 indicates more deaths than kills, survival strategy needs optimization.
+                            </div>
+                        </div>
+                        
+                        <!-- 数据可信度 -->
+                        <div class="dimension-card">
+                            <div class="dimension-header">
+                                <div class="dimension-name lang-zh">数据可信度</div>
+                                <div class="dimension-name lang-en" style="display:none">Data Reliability</div>
+                                <div class="dimension-score">0.97</div>
+                            </div>
+                            <div>
+                                <span class="dimension-level level-excellent lang-zh">优秀</span>
+                                <span class="dimension-level level-excellent lang-en" style="display:none">Excellent</span>
+                            </div>
+                            
+                            <div class="dimension-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">总击杀数</div>
+                                    <div class="stat-label lang-en" style="display:none">Total Kills</div>
+                                    <div class="stat-value">21,289</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label lang-zh">样本量</div>
+                                    <div class="stat-label lang-en" style="display:none">Sample Size</div>
+                                    <div class="stat-value">充足</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 97%; background: var(--info);"></div>
+                            </div>
+                            
+                            <div class="dimension-description lang-zh">
+                                评估数据样本量可靠性，反映评级结果可信度。总击杀21,289表示数据样本充足，评级结果高度可信。
+                            </div>
+                            <div class="dimension-description lang-en" style="display:none">
+                                Evaluates data sample reliability, reflecting rating credibility. Total kills 21,289 indicate sufficient data sample, highly credible rating.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="lang-zh">BR Rating 专业评级公式 v1.0 © 2025 BedWars BR Rating</p>
+            <p class="lang-en" style="display:none">BR Rating Professional Formula v4.0 © 2025 BedWars BR Rating</p>
+        </div>
+    </div>
+
+    <script>
+        // 语言切换功能
+        document.getElementById('langToggle').addEventListener('click', function(e) {
+            if (e.target.classList.contains('lang-option')) {
+                const lang = e.target.dataset.lang;
+                document.querySelectorAll('.lang-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                e.target.classList.add('active');
+                
+                // 显示/隐藏语言内容
+                document.querySelectorAll('.lang-zh, .lang-en').forEach(el => {
+                    if (el.classList.contains(`lang-${lang}`)) {
+                        el.style.display = '';
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // 分析按钮功能
+        document.getElementById('analyzeBtn').addEventListener('click', function() {
+            // 获取输入值
+            const kills = parseInt(document.getElementById('kills').value) || 0;
+            const deaths = parseInt(document.getElementById('deaths').value) || 1;
+            const finalKills = parseInt(document.getElementById('finalKills').value) || 0;
+            const finalDeaths = parseInt(document.getElementById('finalDeaths').value) || 1;
+            const bedsBroken = parseInt(document.getElementById('bedsBroken').value) || 0;
+            const bedsLost = parseInt(document.getElementById('bedsLost').value) || 1;
+            
+            // 执行评级计算
+            const combat = calculateCombat(kills, deaths, finalKills, finalDeaths);
+            const finalDom = calculateFinalDom(finalKills, finalDeaths);
+            const strategic = calculateStrategic(bedsBroken, bedsLost);
+            const survival = calculateSurvival(kills, deaths, finalKills, finalDeaths);
+            const reliability = calculateReliability(kills, finalKills);
+            
+            const preRating = combat * finalDom * strategic * survival;
+            const brRating = preRating * (0.9 + 0.1 * reliability);
+            
+            // 计算关键指标
+            const kdRatio = (kills / deaths).toFixed(2);
+            const fkdRatio = (finalKills / finalDeaths).toFixed(2);
+            const bbblRatio = (bedsBroken / bedsLost).toFixed(2);
+            const deathRate = ((deaths / kills) + (finalDeaths / finalKills)).toFixed(2);
+            const totalKills = kills + finalKills;
+            const totalDeaths = deaths + finalDeaths;
+            
+            // 更新显示
+            document.querySelector('.rating-value').textContent = brRating.toFixed(2);
+            document.querySelector('.rating-level').textContent = getRatingLevel(brRating);
+            
+            // 更新维度分数
+            const dimensionScores = document.querySelectorAll('.dimension-score');
+            dimensionScores[0].textContent = combat.toFixed(2);
+            dimensionScores[1].textContent = finalDom.toFixed(2);
+            dimensionScores[2].textContent = strategic.toFixed(2);
+            dimensionScores[3].textContent = survival.toFixed(2);
+            dimensionScores[4].textContent = reliability.toFixed(2);
+            
+            // 更新关键指标
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues[0].textContent = kdRatio; // K/D
+            statValues[1].textContent = kills.toLocaleString(); // Kills
+            statValues[2].textContent = fkdRatio; // FK/D
+            statValues[3].textContent = finalKills.toLocaleString(); // Final Kills
+            statValues[4].textContent = bbblRatio; // BB/BL
+            statValues[5].textContent = bedsBroken.toLocaleString(); // Beds Broken
+            statValues[6].textContent = totalDeaths.toLocaleString(); // Total Deaths
+            statValues[7].textContent = deathRate; // Death Rate
+            statValues[8].textContent = totalKills.toLocaleString(); // Total Kills
+            statValues[9].textContent = totalKills > 10000 ? "充足" : "不足"; // Sample Size
+            
+            // 更新进度条
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars[0].style.width = `${(combat / 2) * 100}%`;
+            progressBars[1].style.width = `${(finalDom / 3) * 100}%`;
+            progressBars[2].style.width = `${(strategic / 3) * 100}%`;
+            progressBars[3].style.width = `${survival * 100}%`;
+            progressBars[4].style.width = `${reliability * 100}%`;
+            
+            // 更新等级标签
+            updateLevelBadges(combat, finalDom, strategic, survival, reliability);
+            
+            // 添加动画效果
+            document.querySelector('.result-card').style.animation = 'none';
+            setTimeout(() => {
+                document.querySelector('.result-card').style.animation = 'fadeIn 0.8s ease-out';
+            }, 10);
+        });
+
+        // 模拟计算函数
+        function calculateCombat(K, D, FK, FD) {
+            const kd = Math.max(0.1, K / D);
+            const fkd = Math.max(0.1, FK / FD);
+            const combat = (0.7 * Math.log(1 + kd) + 1.3 * Math.log(1 + fkd)) / 2;
+            const decay = Math.min(1, Math.sqrt(K + FK) / 100);
+            return combat * decay;
+        }
+
+        function calculateFinalDom(FK, FD) {
+            const ratio = Math.sqrt(FK / FD);
+            const net = (FK - FD) / 100;
+            const contribution = 0.8 + 0.2 * Math.tanh(net);
+            return ratio * contribution;
+        }
+
+        function calculateStrategic(BB, BL) {
+            const ratio = Math.pow(BB / BL, 0.7);
+            const sample = Math.min(1.5, Math.log(1 + BB) / Math.log(500));
+            return 0.5 + 0.5 * ratio * sample;
+        }
+
+        function calculateSurvival(K, D, FK, FD) {
+            const deathRatio = (D / K) + (FD / FK);
+            return Math.exp(-0.5 * deathRatio);
+        }
+
+        function calculateReliability(K, FK) {
+            const totalKills = K + FK;
+            return Math.tanh(totalKills / 10000);
+        }
+
+        function getRatingLevel(rating) {
+            if (rating < 0.5) return '新手';
+            if (rating < 1.0) return '合格玩家';
+            if (rating < 1.5) return '熟练玩家';
+            if (rating < 2.0) return '精英玩家';
+            if (rating < 3.0) return '专家级玩家';
+            if (rating < 5.0) return '大师级玩家';
+            return '传奇级玩家';
+        }
+        
+        function updateLevelBadges(combat, finalDom, strategic, survival, reliability) {
+            const levelBadges = document.querySelectorAll('.dimension-level');
+            
+            // 更新常规作战效率等级
+            levelBadges[0].className = getCombatLevel(combat) + ' dimension-level lang-zh';
+            levelBadges[1].className = getCombatLevel(combat) + ' dimension-level lang-en';
+            
+            // 更新终局统治力等级
+            levelBadges[2].className = getFinalDomLevel(finalDom) + ' dimension-level lang-zh';
+            levelBadges[3].className = getFinalDomLevel(finalDom) + ' dimension-level lang-en';
+            
+            // 更新战略资源效率等级
+            levelBadges[4].className = getStrategicLevel(strategic) + ' dimension-level lang-zh';
+            levelBadges[5].className = getStrategicLevel(strategic) + ' dimension-level lang-en';
+            
+            // 更新生存效率等级
+            levelBadges[6].className = getSurvivalLevel(survival) + ' dimension-level lang-zh';
+            levelBadges[7].className = getSurvivalLevel(survival) + ' dimension-level lang-en';
+            
+            // 更新数据可信度等级
+            levelBadges[8].className = getReliabilityLevel(reliability) + ' dimension-level lang-zh';
+            levelBadges[9].className = getReliabilityLevel(reliability) + ' dimension-level lang-en';
+        }
+        
+        function getCombatLevel(score) {
+            if (score >= 1.2) return 'level-excellent';
+            if (score >= 0.8) return 'level-good';
+            if (score >= 0.5) return 'level-average';
+            return 'level-poor';
+        }
+        
+        function getFinalDomLevel(score) {
+            if (score >= 2.5) return 'level-excellent';
+            if (score >= 1.8) return 'level-good';
+            if (score >= 1.0) return 'level-average';
+            return 'level-poor';
+        }
+        
+        function getStrategicLevel(score) {
+            if (score >= 1.8) return 'level-excellent';
+            if (score >= 1.2) return 'level-good';
+            if (score >= 0.8) return 'level-average';
+            return 'level-poor';
+        }
+        
+        function getSurvivalLevel(score) {
+            if (score >= 0.8) return 'level-excellent';
+            if (score >= 0.6) return 'level-good';
+            if (score >= 0.4) return 'level-average';
+            return 'level-poor';
+        }
+        
+        function getReliabilityLevel(score) {
+            if (score >= 0.99) return 'level-excellent';
+            if (score >= 0.9) return 'level-good';
+            if (score >= 0.7) return 'level-average';
+            return 'level-poor';
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 触发一次分析
+            document.getElementById('analyzeBtn').click();
+        });
+    </script>
+</body>
+</html>
